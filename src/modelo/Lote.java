@@ -1,4 +1,4 @@
-package edu;
+package modelo;
 
 class Lote {
 
@@ -8,7 +8,7 @@ class Lote {
     private double precio;
 
     public Lote(int _id, double _largo, double _ancho,
-            double precio) {
+            double _precio) {
         this.id = _id;
         this.largo = _largo;
         this.ancho = _ancho;

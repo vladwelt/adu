@@ -1,4 +1,4 @@
-package adu;
+package modelo;
 
 class Cliente {
 
@@ -23,15 +23,16 @@ class Cliente {
 
     public Cliente(int _ci, String _nombre, String _ap, String _am,
             String _direccion, int _tc) {
-        Cliente(_ci, _nombre, _ap, _am, _direccion,0, _tc);
+        this(_ci, _nombre, _ap, _am, _direccion,0, _tc);
     }
 
     public Cliente(int _ci, String _nombre, String _ap,
             String _direccion, int _tc) {
-        Cliente(_ci, _nombre, _ap, "", _direccion,0, _tc);
+        this(_ci, _nombre, _ap, "", _direccion,0, _tc);
     }
     
     public int getCi() {
+        
         return this.ci;
     }
 
