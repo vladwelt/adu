@@ -1,6 +1,6 @@
 package modelo;
 
-class Lote {
+public class Lote {
 
     private int id;
     private double largo;

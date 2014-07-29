@@ -1,6 +1,6 @@
 package modelo;
 
-class Cliente {
+public class Cliente {
 
     private int ci;//Carnet de identidad
     private String nombre;
