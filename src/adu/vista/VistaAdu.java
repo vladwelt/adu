@@ -1,4 +1,4 @@
-package adu;
+package adu.vista;
 
 import javax.swing.*;
 import java.awt.*;

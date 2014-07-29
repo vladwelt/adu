@@ -1,4 +1,4 @@
-package adu;
+package adu.modelo;
 
 class Urbanizacion {
 

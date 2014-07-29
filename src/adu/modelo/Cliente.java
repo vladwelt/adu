@@ -1,4 +1,4 @@
-package modelo;
+package adu.modelo;
 
 class Cliente {
 

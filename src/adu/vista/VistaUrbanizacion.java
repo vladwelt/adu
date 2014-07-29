@@ -1,4 +1,4 @@
-package adu;
+package adu.vista;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -17,7 +17,7 @@ class VistaUrbanizacion extends JPanel {
         label_find = new JTextField();
         button_find = new JButton("Buscar..");
         tabla = new JTable(new MyTableModel());
-        tabla.setPreferredScrollableViewportSize(new Dimension(200,500));
+        //tabla.setPreferredScrollableViewportSize(new Dimension(200,500));
         tabla.setFillsViewportHeight(true);
         tabla.setAutoCreateRowSorter(true);
 
