@@ -1,4 +1,4 @@
-package adu;
+package vista;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

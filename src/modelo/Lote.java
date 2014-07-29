@@ -3,6 +3,8 @@ package modelo;
 public class Lote {
 
     private int id;
+    private String descripcion;
+    private int numero_lote;
     private double largo;
     private double ancho;
     private double precio;

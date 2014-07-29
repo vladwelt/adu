@@ -1,7 +1,7 @@
 package modelo;
 
 public class Urbanizacion {
-
+    private int id;
     private String nombre;
     private double largo;
     private double ancho;

@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package adu;
+package vista;
 
 import javax.swing.*;
 import javax.swing.*;
