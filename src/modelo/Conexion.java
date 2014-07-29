@@ -8,32 +8,29 @@ package modelo;
 import java.sql.*;
 
 public class Conexion {
+    private static Conexion conexion;
+    
     private Connection conn;
     private String driver = "com.mysql.jdbc.Driver";
     private String connectString = "jdbc:mysql://localhost:3306/adu";
     private String user = "root";
     private String password = "root";
-
-    public Conexion() {
-    }
-
-    public boolean conectar() {
-        boolean estado;
+ 
+    private Conexion() {
         try {
             Class.forName(driver);
             conn = DriverManager.getConnection(connectString, user, password);
             System.out.println("conexion establecida");
-            estado = true;
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("fallo la conexxion");
             System.exit(0);
-            estado = false;
         }
-        return estado;
     }
 
-    public Connection getConexion() {
-        return conn;
+    public static Conexion getConexion() {
+        if (conexion == null)
+           conexion = new Conexion();
+        return conexion;
     }
 
     public void cerrar() {
@@ -43,6 +40,12 @@ public class Conexion {
         } catch (Exception e) {
             System.out.println("no existe ninguna conexion abierta");
         }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(conexion.getConexion());
+        System.out.println(conexion.getConexion());
+        System.out.println(conexion.getConexion());
     }
     
 }
