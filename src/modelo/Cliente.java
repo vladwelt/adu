@@ -105,6 +105,6 @@ public class Cliente {
         prepareStatement.setInt(6, telefono_fijo);
         prepareStatement.setInt(7, telefono_celular);
         prepareStatement.execute();
-        connection.close();
+//        connection.close();
     }
 }
