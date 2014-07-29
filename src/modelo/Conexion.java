@@ -41,6 +41,10 @@ public class Conexion {
             System.out.println("no existe ninguna conexion abierta");
         }
     }
+
+    public Connection getConnection() {
+        return conn;
+    }
     
     public static void main(String[] args) {
         System.out.println(conexion.getConexion());
