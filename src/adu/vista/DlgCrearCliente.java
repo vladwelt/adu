@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package vista;
+package adu.vista;
 
+import adu.modelo.Cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -16,7 +17,6 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import modelo.Cliente;
 
 /**
  *

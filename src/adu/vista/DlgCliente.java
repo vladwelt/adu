@@ -4,24 +4,19 @@
  * and open the template in the editor.
  */
 
-package vista;
+package adu.vista;
 
+import adu.modelo.Cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JTable;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import modelo.Cliente;
-import modelo.ListaCliente;
+import adu.modelo.ListaCliente;
 
 /**
  *
