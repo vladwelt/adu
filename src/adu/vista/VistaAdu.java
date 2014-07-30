@@ -18,11 +18,14 @@ public class VistaAdu extends JFrame {
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //urbanizaciones = new VistaUrbanizacion[];
+        
         button_add = new JButton("Agregar");
+        
         lista_urbanizaciones = new JComboBox();
         for (int i = 0; i<5; i++) {
             lista_urbanizaciones.addItem("Urbanizacion" + i);
         }
+        
         lista_urbanizaciones.setSelectedIndex(0);
         setLayout(new BorderLayout());
 //        addViewUrbanizaciones();

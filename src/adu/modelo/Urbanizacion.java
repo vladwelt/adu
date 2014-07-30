@@ -1,5 +1,9 @@
 package adu.modelo;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class Urbanizacion {
     private int id;
     private String nombre;
@@ -36,4 +40,21 @@ public class Urbanizacion {
     public Lote[] getLotes() {
         return lotes;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void save() throws SQLException {
+        Conexion conexion = Conexion.getConexion();
+        Connection connection = conexion.getConnection();
+        String query = "insert into urbanizacion(nombre,ancho,largo,cantidad_lotes)values(?,?,?,?);";
+        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        prepareStatement.setString(1, nombre);
+        prepareStatement.setDouble(2, ancho);
+        prepareStatement.setDouble(3, largo);
+        prepareStatement.setInt(4, cantidad_lotes);
+        prepareStatement.execute();
+    }
+    
 }
