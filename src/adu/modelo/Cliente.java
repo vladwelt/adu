@@ -1,6 +1,10 @@
 package adu.modelo;
 
-class Cliente {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class Cliente {
 
     private int ci;//Carnet de identidad
     private String nombre;
@@ -88,4 +92,19 @@ class Cliente {
         this.telefono_celular = _tc;
     }
 
+    public void save() throws SQLException {
+        Conexion conexion = Conexion.getConexion();
+        Connection connection = conexion.getConnection();
+        String query = "insert into cliente (ci,nombre,apellido_paterno,apellido_materno,direccion,telefono_fijo,telefono_celular)values(?,?,?,?,?,?,?);";
+        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        prepareStatement.setInt(1, ci);
+        prepareStatement.setString(2, nombre);
+        prepareStatement.setString(3, apellido_paterno);
+        prepareStatement.setString(4, apellido_materno);
+        prepareStatement.setString(5, direccion);
+        prepareStatement.setInt(6, telefono_fijo);
+        prepareStatement.setInt(7, telefono_celular);
+        prepareStatement.execute();
+//        connection.close();
+    }
 }

@@ -1,7 +1,7 @@
 package adu.modelo;
 
-class Urbanizacion {
-
+public class Urbanizacion {
+    private int id;
     private String nombre;
     private double largo;
     private double ancho;
@@ -21,11 +21,11 @@ class Urbanizacion {
         return this.nombre;
     }
 
-    public int getLargo() {
+    public double getLargo() {
         return this.largo;
     }
 
-    public int getAncho() {
+    public double getAncho() {
         return this.ancho;
     }
 
