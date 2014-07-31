@@ -66,6 +66,39 @@ class VistaUrbanizacion extends JPanel {
 //        tabla.setModel(model);
     }
 
+
+    public void addCliente(JFrame frame) {
+            JPanel form = new JPanel(new GridLayout(0,1));
+
+            form.add(new JLabel("C.I."));
+            JTextField ci = new JTextField();
+            form.add(ci);
+
+            form.add(new JLabel("Nombre"));
+            JTextField nombre = new JTextField();
+            form.add(nombre);
+
+            form.add(new JLabel("Apellido Paterno"));
+            JTextField ap = new JTextField();
+            form.add(ap);
+
+            form.add(new JLabel("Apellido Materno"));
+            JTextField am = new JTextField();
+            form.add(am);
+
+            form.add(new JLabel("Direccion"));
+            JTextField dir = new JTextField();
+            form.add(dir);
+
+            int result = JOptionPane.showConfirmDialog(frame, form,
+                    "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION) {
+                //TODO evaluacion de la respuesta 
+                //y captura de datos llenados
+            }
+    }
+
     class MyTableModel extends AbstractTableModel {
         
         
