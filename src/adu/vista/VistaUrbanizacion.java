@@ -1,7 +1,5 @@
 package adu.vista;
 
-import adu.modelo.Cliente;
-import adu.modelo.Lote;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.Dimension;
@@ -9,6 +7,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
+import java.lang.Integer;
+
+import java.sql.SQLException;
+
+import adu.modelo.Cliente;
 
 class VistaUrbanizacion extends JPanel {
 
@@ -144,6 +147,36 @@ class VistaUrbanizacion extends JPanel {
                 //TODO evaluacion de la respuesta 
             //y captura de datos llenados
         }
+            form.add(new JLabel("Telefono Fijo"));
+            JTextField tf = new JTextField();
+            form.add(tf);
+
+            form.add(new JLabel("Celular"));
+            JTextField cel = new JTextField();
+            form.add(cel);
+
+        result = JOptionPane.showConfirmDialog(frame, form,
+                "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION) {
+                //try {
+                //TODO Verificacion de datos correctos
+                    int numci = Integer.parseInt(ci.getText());
+                    int numtf = Integer.parseInt(tf.getText());
+                    int numcel = Integer.parseInt(cel.getText());
+                //} catch(Exception e) {
+                  //  System.out.println("ERROR IN INPUT DATA");
+                //}
+                Cliente nuevo = new Cliente(numci,nombre.getText(),
+                        ap.getText(),am.getText(),dir.getText(),
+                        numtf,numcel);
+                try {
+                    nuevo.save();
+                } catch(SQLException ex) {
+                    System.out.println("ERROR SAVE: Cliente");
+                }
+
+            }
     }
 
     class MyTableModel extends AbstractTableModel {
