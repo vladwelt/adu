@@ -47,6 +47,11 @@ public class Controlador implements ActionListener {
                         rowData[i][2] = "S/N";
                         rowData[i][3] = "S/N";
                         rowData[i][4] = "S/N";
+                    } else {
+                        rowData[i][1] = cliente.getCi();
+                        rowData[i][2] = cliente.getNombre();
+                        rowData[i][3] = cliente.getApellidoPaterno();
+                        rowData[i][4] = cliente.getApellidoMaterno();
                     }
                     rowData[i][6] = lote.getPrecio();
                 }
