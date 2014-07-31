@@ -34,7 +34,6 @@ public class Controlador implements ActionListener {
                     "Nombre",
                     "Apellido Paterno",
                     "Apellido Materno",
-                    "Detalles",
                     "Total",
                     "Deuda"};
                 Object rowData[][] = new Object[lotes.size()][columnNames.length];
@@ -53,8 +52,8 @@ public class Controlador implements ActionListener {
                         rowData[i][3] = cliente.getApellidoPaterno();
                         rowData[i][4] = cliente.getApellidoMaterno();
                     }
-                    rowData[i][6] = lote.getPrecio();
-                    rowData[i][7] = lote.getPrecio() - lote.getSumaPagos();
+                    rowData[i][5] = lote.getPrecio();
+                    rowData[i][6] = lote.getPrecio() - lote.getSumaPagos();
 //                    rowData[i][6] = 
                 }
                 DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
