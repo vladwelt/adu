@@ -5,9 +5,10 @@ import adu.modelo.Lote;
 import adu.modelo.Pago;
 import java.awt.*;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+//import java.awt.event.MouseAdapter;
+import java.awt.event.*;
 import java.lang.Integer;
 
 import java.sql.SQLException;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.event.*;
 
 class VistaUrbanizacion extends JPanel {
 
@@ -25,6 +28,7 @@ class VistaUrbanizacion extends JPanel {
     private JTable tabla;
     private JTable tabla_cliente;
     private PnPagos pnPagos;
+    private TableRowSorter<DefaultTableModel> sorter;
     
     public VistaUrbanizacion() {
         //this.urbanizacion = _urbanizacion;
@@ -32,7 +36,7 @@ class VistaUrbanizacion extends JPanel {
         button_find = new JButton("Buscar..");
         btn_todos = new JButton("Todos");
         pnPagos = new PnPagos();
-        tabla = new JTable(new MyTableModel());
+        tabla = new JTable();
         tabla_cliente = new JTable(new MyTableModel2());
 
         tabla_cliente.setPreferredScrollableViewportSize(new Dimension(200, 20));
@@ -53,6 +57,22 @@ class VistaUrbanizacion extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         label_find.setColumns(50);
+
+        //Filtrado de datos
+        label_find.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        filterText();
+                    }
+
+                    public void insertUpdate(DocumentEvent e) {
+                        filterText();
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+                        filterText();
+                    }
+                });
         
         panel.add(btn_todos, BorderLayout.WEST);
         panel.add(label_find, BorderLayout.CENTER);
@@ -68,6 +88,11 @@ class VistaUrbanizacion extends JPanel {
         this();
         tabla.setModel(model);
         this.lotesModel = model;
+
+        sorter = new TableRowSorter<DefaultTableModel>(model);
+        tabla.setRowSorter(sorter);
+        tabla.setFillsViewportHeight(true);
+
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int indice = tabla.getSelectedRow();
@@ -148,8 +173,20 @@ class VistaUrbanizacion extends JPanel {
 
     void setModel(DefaultTableModel model) {
         tabla = new JTable(model);
+
         setVisible(true);
 //        tabla.setModel(model);
+    }
+
+    public void filterText() {
+        RowFilter<DefaultTableModel, Object> filter = null;
+
+        try {
+            filter = RowFilter.regexFilter(label_find.getText(), 2);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(filter);
     }
 
     public void addCliente(JFrame frame) {
@@ -214,61 +251,6 @@ class VistaUrbanizacion extends JPanel {
             }
     }
 
-    class MyTableModel extends AbstractTableModel {
-
-        private String[] columnNames = {"C.I.",
-            "Nombre",
-            "Apellido Paterno",
-            "Apellido Materno",
-            "Detalles",
-            "Total",
-            "Deuda"};
-        private Object[][] data = {
-            {new Integer(7989077), "Kathy", "Smith", "Rocha",
-                "button", new Integer(7888), new Integer(89080)},
-            {new Integer(8989022), "John", "Doe", "Perez",
-                "button", new Integer(12313), new Integer(78798)},
-            {new Integer(6768980), "Sue", "Black", "Rojo",
-                "button", new Integer(25657), new Integer(5675)},
-            {new Integer(1234567), "Jane", "White", "Rex",
-                "button", new Integer(34555), new Integer(678768)},
-            {new Integer(4564577), "Joe", "Brown", "Ter",
-                "button", new Integer(10345), new Integer(67867)}
-        };
-
-        public int getColumnCount() {
-            return columnNames.length;
-        }
-
-        public int getRowCount() {
-            return data.length;
-        }
-
-        public String getColumnName(int col) {
-            return columnNames[col];
-        }
-
-        public Object getValueAt(int row, int col) {
-            return data[row][col];
-        }
-
-        public Class getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
-
-        public boolean isCellEditable(int row, int col) {
-            if (col < 2) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        public void setValueAt(Object value, int row, int col) {
-
-            data[row][col] = value;
-        }
-    }
 
     class MyTableModel2 extends AbstractTableModel {
 
