@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.Dimension;
 import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 
 class VistaUrbanizacion extends JPanel {
     
@@ -19,7 +20,7 @@ class VistaUrbanizacion extends JPanel {
         button_find = new JButton("Buscar..");
         tabla = new JTable(new MyTableModel());
         tabla_cliente = new JTable(new MyTableModel2());
-
+        
         tabla_cliente.setPreferredScrollableViewportSize(new Dimension(200,20));
         tabla.setFillsViewportHeight(true);
         tabla.setAutoCreateRowSorter(true);
@@ -38,6 +39,17 @@ class VistaUrbanizacion extends JPanel {
         add(label_find,BorderLayout.NORTH);
         add(scrollPane,BorderLayout.CENTER);
         add(scrollPane1,BorderLayout.SOUTH);
+    }
+
+    public VistaUrbanizacion(DefaultTableModel model) {
+        this();
+        tabla.setModel(model);
+    }
+
+    void setModel(DefaultTableModel model) {
+        tabla = new JTable(model);
+        setVisible(true);
+//        tabla.setModel(model);
     }
 
     class MyTableModel extends AbstractTableModel {

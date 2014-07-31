@@ -9,14 +9,14 @@ INSERT INTO urbanizacion VALUES (1000,"Sanja",1222,2222,10),
     (1001,"CaraCota",23232,23232,20),
     (1002,"Latitud",12222,2121,30);
 
-INSERT INTO lote VALUES(1,1,"Lote de la esquina",122,222,4000),
-    (2,1,"lote del medio",23232,13123,8000),
-    (3,1,"lote de a lado de la esquina",232,121,7878),
-    (4,2,"el primer lote",232,121,3434),
-    (5,2,"el segundo lote",122,222,1214),
-    (6,2,"el tecer loter",212,544,2333),
-    (7,3,"lotecito al lado del rio",3243,32432,32344),
-    (8,3,"lleno de arboles",12321,2132,21321);
+INSERT INTO lote VALUES(1,1001,1,"Lote de la esquina",122,222,4000),
+    (2,1001,2,"lote del medio",23232,13123,8000),
+    (3,1001,3,"lote de a lado de la esquina",232,121,7878),
+    (4,1002,1,"el primer lote",232,121,3434),
+    (5,1002,2,"el segundo lote",122,222,1214),
+    (6,1002,3,"el tecer loter",212,544,2333),
+    (7,1003,1,"lotecito al lado del rio",3243,32432,32344),
+    (8,1003,2,"lleno de arboles",12321,2132,21321);
 
 INSERT INTO venta VALUES(1,1,1,12,2014-03-03),
     (2,2,2,24,"2013-08-09"),

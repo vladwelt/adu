@@ -10,11 +10,12 @@ public class Lote {
     private double precio;
 
     public Lote(int _id, double _largo, double _ancho,
-            double _precio) {
+            double _precio, int numero_lote) {
         this.id = _id;
         this.largo = _largo;
         this.ancho = _ancho;
         this.precio = _precio;
+        this.numero_lote = numero_lote;
     }
 
     public int getId() {
@@ -30,7 +31,7 @@ public class Lote {
     }
 
     public double getPrecio() {
-        return this.id;
+        return this.precio;
     }
 
     public void setId(int _id) {
@@ -48,4 +49,27 @@ public class Lote {
     public void setPrecio(double _precio) {
         this.precio = _precio;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getNumero_lote() {
+        return numero_lote;
+    }
+
+    public void setNumero_lote(int numero_lote) {
+        this.numero_lote = numero_lote;
+    }
+
+    public Cliente getCliente() {
+        Cliente res = null;
+        
+        return res;
+    }
+    
 }

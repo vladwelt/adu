@@ -1,15 +1,15 @@
 package adu.vista;
 
 import adu.modelo.ListaUrbanizacion;
+import adu.modelo.Urbanizacion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 public class VistaAdu extends JFrame {
-    
+
     //private VistaUrbanizacion[] panel_urbanizaciones;
     //private Urbanizacion[] urbanizaciones;
     private VistaUrbanizacion vista;
@@ -19,12 +19,12 @@ public class VistaAdu extends JFrame {
 
     public VistaAdu(String nombre) {
         super(nombre);
-        
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //urbanizaciones = new VistaUrbanizacion[];
-        
+
         button_add = new JButton("Agregar");
-        
+
         lista_urbanizaciones = new JComboBox();
         try {
             lista_urbanizaciones.setModel(ListaUrbanizacion.getUrbanizaciones().getModel());
@@ -34,32 +34,41 @@ public class VistaAdu extends JFrame {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
-//        lista_urbanizaciones.setSelectedIndex(0);
+        if(lista_urbanizaciones.getModel().getSize() > 0)
+            lista_urbanizaciones.setSelectedIndex(0);
         setLayout(new BorderLayout());
 //        addViewUrbanizaciones();
         panels = new JTabbedPane();
         vista = new VistaUrbanizacion();
-        add(lista_urbanizaciones,BorderLayout.NORTH);
-        add(panels,BorderLayout.CENTER);
+        add(lista_urbanizaciones, BorderLayout.NORTH);
+        add(panels, BorderLayout.CENTER);
     }
-    
+
     public void runTest() {
         panels.removeAll();
-        for (int i=0; i < 5; i++) {
-            String nombre = "Tab" + i;
-            panels.add(nombre, new VistaUrbanizacion());
-            iniciarTabComponent(i);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            String nombre = "Tab" + i;
+//            panels.add(nombre, new VistaUrbanizacion());
+//            iniciarTabComponent(i);
+//        }
 
-        setSize(new Dimension(400,200));
+        setSize(new Dimension(400, 200));
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     public void addComboBoxActionListener(ActionListener listener) {
         lista_urbanizaciones.addActionListener(listener);
-    
+
+    }
+
+    public Urbanizacion getSelectedUrbanizacion() {
+        Urbanizacion res = null;
+        Object selectedItem = lista_urbanizaciones.getModel().getSelectedItem();
+        if (selectedItem instanceof Urbanizacion) {
+            res = (Urbanizacion) selectedItem;
+        }
+        return res;
     }
 
     public int getComboBoxSelectionIndex() {
@@ -67,7 +76,7 @@ public class VistaAdu extends JFrame {
     }
 
     private void iniciarTabComponent(int i) {
-        panels.setTabComponentAt(i,new ButtonTabComponent(panels));
+        panels.setTabComponentAt(i, new ButtonTabComponent(panels));
     }
 
     private void fill_urbanizaciones() {
@@ -82,5 +91,14 @@ public class VistaAdu extends JFrame {
         //    panels.add(urbanizaciones[i].getName(),
         //            panel_urbanizaciones[i]);
         //}
+    }
+
+    public void setTablaLotesMdel(DefaultTableModel model) {
+        String nombre = getSelectedUrbanizacion().toString();
+        panels.add(nombre, new VistaUrbanizacion(model));
+
+        setSize(new Dimension(400, 200));
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 }
