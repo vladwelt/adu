@@ -1,8 +1,12 @@
 package adu.vista;
 
+import adu.modelo.ListaUrbanizacion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class VistaAdu extends JFrame {
     
@@ -22,11 +26,16 @@ public class VistaAdu extends JFrame {
         button_add = new JButton("Agregar");
         
         lista_urbanizaciones = new JComboBox();
-        for (int i = 0; i<5; i++) {
-            lista_urbanizaciones.addItem("Urbanizacion" + i);
+        try {
+            lista_urbanizaciones.setModel(ListaUrbanizacion.getUrbanizaciones().getModel());
+//        for (int i = 0; i<5; i++) {
+//            lista_urbanizaciones.addItem("Urbanizacion" + i);
+//        }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
         
-        lista_urbanizaciones.setSelectedIndex(0);
+//        lista_urbanizaciones.setSelectedIndex(0);
         setLayout(new BorderLayout());
 //        addViewUrbanizaciones();
         panels = new JTabbedPane();

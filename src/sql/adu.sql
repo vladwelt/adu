@@ -34,7 +34,8 @@ create table venta(
 create table pago(
     id serial primary key,
     venta_id integer references venta(id),
-    fecha_pago timestamp
+    fecha_pago timestamp,
+    monto double
 );
 
 

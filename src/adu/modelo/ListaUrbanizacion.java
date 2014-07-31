@@ -6,16 +6,21 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 
 public class ListaUrbanizacion {
+    private DefaultComboBoxModel<Urbanizacion> modeUrbanizacion;
     private ArrayList<Urbanizacion> urbanizaciones ;
 
     public ListaUrbanizacion() {
         this.urbanizaciones = new ArrayList<>();
+        this.modeUrbanizacion = new DefaultComboBoxModel<>();
     }
     
     private void agregar(Urbanizacion urbanizacion) {
         this.urbanizaciones.add(urbanizacion);
+        this.modeUrbanizacion.addElement(urbanizacion);
     }
     
     public static ListaUrbanizacion getUrbanizaciones() throws SQLException {
@@ -48,9 +53,8 @@ public class ListaUrbanizacion {
         return urbanizaciones.get(i);
     }
 
-    public static void main(String[] args) throws SQLException {
-        System.out.println(ListaUrbanizacion.getUrbanizaciones().urbanizaciones.size());
-       
+    public ComboBoxModel getModel() {
+        return modeUrbanizacion;
     }
     
 }
