@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.lang.Integer;
 
@@ -25,7 +26,7 @@ class VistaUrbanizacion extends JPanel {
     private JTable tabla;
     private JTable tabla_cliente;
     private PnPagos pnPagos;
-    
+
     public VistaUrbanizacion() {
         //this.urbanizacion = _urbanizacion;
         label_find = new JTextField();
@@ -53,14 +54,14 @@ class VistaUrbanizacion extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         label_find.setColumns(50);
-        
+
         panel.add(btn_todos, BorderLayout.WEST);
         panel.add(label_find, BorderLayout.CENTER);
-        panel.add(button_find, BorderLayout.EAST);
+//        panel.add(button_find, BorderLayout.EAST);
         add(panel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(scrollPane1, BorderLayout.SOUTH);
-        add(pnPagos, BorderLayout.WEST);
+        add(pnPagos, BorderLayout.EAST);
     }
     private DefaultTableModel lotesModel;
 
@@ -71,22 +72,22 @@ class VistaUrbanizacion extends JPanel {
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int indice = tabla.getSelectedRow();
-                if(indice < 0){
+                if (indice < 0) {
                     System.out.println("indice negativo seleccionado de la tabla de clientes");
                     return;
                 }
                 Object oLote = tabla.getValueAt(indice, 0);
                 Object oCi = tabla.getValueAt(indice, 1);
-                if(oLote == null || oCi == null) {
+                if (oLote == null || oCi == null) {
                     System.out.println("lote o ci == null");
                     return;
                 }
                 int lote = Integer.parseInt(oLote.toString());
                 int ci = Integer.parseInt(oCi.toString());
-                ArrayList<Pago> pagos = Lote.getPagos(ci, lote); 
+                ArrayList<Pago> pagos = Lote.getPagos(ci, lote);
                 String[] columnNames = {
                     "fecha pago",
-                    "monto" 
+                    "monto"
                 };
                 Object rowData[][] = new Object[pagos.size()][columnNames.length];
                 for (int i = 0; i < rowData.length; i++) {
@@ -94,6 +95,7 @@ class VistaUrbanizacion extends JPanel {
                     rowData[i][0] = pago.getFechaPago();
                     rowData[i][1] = pago.getMonto();
                 }
+                
                 DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
                 pnPagos.setCambiarTablaPagos(model);
             }
@@ -104,9 +106,9 @@ class VistaUrbanizacion extends JPanel {
                 tabla.setModel(lotesModel);
             }
         });
-        button_find.addActionListener(new ActionListener() {
+        label_find.addKeyListener(new KeyAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
                 boolean bb = false;
                 String buscar = label_find.getText();
                 Object[] row;
@@ -118,28 +120,47 @@ class VistaUrbanizacion extends JPanel {
                     "Apellido Materno",
                     "Detalles",
                     "Total",
-                    "Deuda"};
+                    "Deuda"
+                };
+                int k = 0;
                 Object rowData[][] = new Object[lotesModel.getRowCount()][columnNames.length];
                 for (int i = 0; i < rowData.length; i++) {
                     bb = false;
-                    bb = bb || contiene(buscar , i,2); 
-                    bb = bb || contiene(buscar , i,3); 
-                    bb = bb || contiene(buscar , i,4); 
+                    bb = bb || contiene(buscar, i, 2);
+                    bb = bb || contiene(buscar, i, 3);
+                    bb = bb || contiene(buscar, i, 4);
                     if (bb) {
-                        System.out.println(buscar + " = " + lotesModel.getValueAt(i, 2).toString() + "=>" + lotesModel.getValueAt(i, 2).toString().contains(buscar));
                         for (int j = 0; j < lotesModel.getColumnCount(); j++) {
-                            rowData[i][j] = lotesModel.getValueAt(i, j);                        
+                            rowData[i][j] = lotesModel.getValueAt(i, j);
                         }
                     }
                 }
-                DefaultTableModel filtrado = new DefaultTableModel(rowData, columnNames);
+                
+                Object rowDatas[][] = new Object[lotesModel.getRowCount()][columnNames.length];
+                int l =0;
+                for (int i = 0; i < rowDatas.length; i++) {
+                    System.out.println(rowData[i][0]);
+                    if(rowData[i][0] != null) {
+                        rowDatas[l] = rowData[i];
+                        l++;
+                    }
+                }
+//                for (int i = 0; i < rowData.length; i++) {
+//                    for (int j = 0; j < rowData[0].length; j++) {
+//                        System.out.print(rowData[i][j] + " , ");
+//                    }
+//                    System.out.println("");
+//                }
+                DefaultTableModel filtrado = new DefaultTableModel(rowDatas, columnNames);
                 tabla.setModel(filtrado);
             }
 
             private boolean contiene(String buscar, int i, int j) {
                 Object value = lotesModel.getValueAt(i, j);
-                if(value != null)
-                    return buscar.contains(value.toString());
+                if (value != null) {
+//                System.out.println(buscar + " = " +value.toString() + "=>" + value.toString().contains(buscar));
+                    return value.toString().contains(buscar);
+                }
                 return false;
             }
 
@@ -179,39 +200,39 @@ class VistaUrbanizacion extends JPanel {
                 "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-                //TODO evaluacion de la respuesta 
+            //TODO evaluacion de la respuesta 
             //y captura de datos llenados
         }
-            form.add(new JLabel("Telefono Fijo"));
-            JTextField tf = new JTextField();
-            form.add(tf);
+        form.add(new JLabel("Telefono Fijo"));
+        JTextField tf = new JTextField();
+        form.add(tf);
 
-            form.add(new JLabel("Celular"));
-            JTextField cel = new JTextField();
-            form.add(cel);
+        form.add(new JLabel("Celular"));
+        JTextField cel = new JTextField();
+        form.add(cel);
 
         result = JOptionPane.showConfirmDialog(frame, form,
                 "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
-            if (result == JOptionPane.OK_OPTION) {
-                //try {
-                //TODO Verificacion de datos correctos
-                    int numci = Integer.parseInt(ci.getText());
-                    int numtf = Integer.parseInt(tf.getText());
-                    int numcel = Integer.parseInt(cel.getText());
-                //} catch(Exception e) {
-                  //  System.out.println("ERROR IN INPUT DATA");
-                //}
-                Cliente nuevo = new Cliente(numci,nombre.getText(),
-                        ap.getText(),am.getText(),dir.getText(),
-                        numtf,numcel);
-                try {
-                    nuevo.save();
-                } catch(SQLException ex) {
-                    System.out.println("ERROR SAVE: Cliente");
-                }
-
+        if (result == JOptionPane.OK_OPTION) {
+            //try {
+            //TODO Verificacion de datos correctos
+            int numci = Integer.parseInt(ci.getText());
+            int numtf = Integer.parseInt(tf.getText());
+            int numcel = Integer.parseInt(cel.getText());
+            //} catch(Exception e) {
+            //  System.out.println("ERROR IN INPUT DATA");
+            //}
+            Cliente nuevo = new Cliente(numci, nombre.getText(),
+                    ap.getText(), am.getText(), dir.getText(),
+                    numtf, numcel);
+            try {
+                nuevo.save();
+            } catch (SQLException ex) {
+                System.out.println("ERROR SAVE: Cliente");
             }
+
+        }
     }
 
     class MyTableModel extends AbstractTableModel {

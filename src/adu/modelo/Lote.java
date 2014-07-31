@@ -131,4 +131,39 @@ public class Lote {
         return cliente;
     }
 
+    public double getSumaPagos() {
+        ArrayList<Pago> pagos = getPagos();
+        double res =0;
+        for (Pago pago : pagos) {
+            res = res + pago.getMonto();
+        }
+        return res;
+    }
+
+    private ArrayList<Pago> getPagos() {
+        ArrayList<Pago> pagos = new ArrayList<>();
+        Pago pago = null;
+        try {
+            String query = "select * from pago,venta where venta_id=venta.id and lote_id="+this.id+";";
+            Connection connection = Conexion.getConexion().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            int id;
+            int venta_id;
+            Date fecha_pago;
+            double monto;
+            while (resultSet.next()) {
+                id = resultSet.getInt("pago.id");
+                venta_id = resultSet.getInt("venta_id");
+                fecha_pago = resultSet.getDate("fecha_pago");
+                monto = resultSet.getDouble("monto");
+                pago = new Pago(id, venta_id, fecha_pago, monto);
+                pagos.add(pago);
+            }
+//        connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Lote.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pagos;
+    }
+
 }
