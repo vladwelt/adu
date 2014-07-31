@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.Dimension;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 
 class VistaUrbanizacion extends JPanel {
@@ -36,7 +38,12 @@ class VistaUrbanizacion extends JPanel {
         JScrollPane scrollPane1 = new JScrollPane(tabla_cliente,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        add(label_find,BorderLayout.NORTH);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        label_find.setColumns(50);
+        panel.add(label_find,BorderLayout.CENTER);
+        panel.add(button_find,BorderLayout.EAST);
+        add(panel,BorderLayout.NORTH);
         add(scrollPane,BorderLayout.CENTER);
         add(scrollPane1,BorderLayout.SOUTH);
     }
@@ -44,6 +51,13 @@ class VistaUrbanizacion extends JPanel {
     public VistaUrbanizacion(DefaultTableModel model) {
         this();
         tabla.setModel(model);
+        button_find.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
     }
 
     void setModel(DefaultTableModel model) {
