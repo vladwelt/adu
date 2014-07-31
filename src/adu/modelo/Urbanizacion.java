@@ -44,6 +44,11 @@ public class Urbanizacion {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return this.nombre; //To change body of generated methods, choose Tools | Templates.
+    }
     
     public void save() throws SQLException {
         Conexion conexion = Conexion.getConexion();
