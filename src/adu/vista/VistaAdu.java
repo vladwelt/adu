@@ -41,7 +41,7 @@ public class VistaAdu extends JFrame {
         panels = new JTabbedPane();
         vista = new VistaUrbanizacion();
         add(lista_urbanizaciones, BorderLayout.NORTH);
-        add(panels, BorderLayout.CENTER);
+        add(panels, BorderLayout.CENTER);           
     }
 
     public void runTest() {

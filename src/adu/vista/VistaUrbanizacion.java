@@ -1,17 +1,20 @@
 package adu.vista;
 
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import java.awt.Dimension;
+import adu.modelo.Cliente;
+import adu.modelo.Lote;
+import adu.modelo.Pago;
 import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
 import java.lang.Integer;
 
 import java.sql.SQLException;
-
-import adu.modelo.Cliente;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 class VistaUrbanizacion extends JPanel {
 
@@ -21,12 +24,14 @@ class VistaUrbanizacion extends JPanel {
     private JButton btn_todos;
     private JTable tabla;
     private JTable tabla_cliente;
-
+    private PnPagos pnPagos;
+    
     public VistaUrbanizacion() {
         //this.urbanizacion = _urbanizacion;
         label_find = new JTextField();
         button_find = new JButton("Buscar..");
         btn_todos = new JButton("Todos");
+        pnPagos = new PnPagos();
         tabla = new JTable(new MyTableModel());
         tabla_cliente = new JTable(new MyTableModel2());
 
@@ -55,6 +60,7 @@ class VistaUrbanizacion extends JPanel {
         add(panel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(scrollPane1, BorderLayout.SOUTH);
+        add(pnPagos, BorderLayout.WEST);
     }
     private DefaultTableModel lotesModel;
 
@@ -62,8 +68,37 @@ class VistaUrbanizacion extends JPanel {
         this();
         tabla.setModel(model);
         this.lotesModel = model;
+        tabla.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int indice = tabla.getSelectedRow();
+                if(indice < 0){
+                    System.out.println("indice negativo seleccionado de la tabla de clientes");
+                    return;
+                }
+                Object oLote = tabla.getValueAt(indice, 0);
+                Object oCi = tabla.getValueAt(indice, 1);
+                if(oLote == null || oCi == null) {
+                    System.out.println("lote o ci == null");
+                    return;
+                }
+                int lote = Integer.parseInt(oLote.toString());
+                int ci = Integer.parseInt(oCi.toString());
+                ArrayList<Pago> pagos = Lote.getPagos(ci, lote); 
+                String[] columnNames = {
+                    "fecha pago",
+                    "monto" 
+                };
+                Object rowData[][] = new Object[pagos.size()][columnNames.length];
+                for (int i = 0; i < rowData.length; i++) {
+                    Pago pago = pagos.get(i);
+                    rowData[i][0] = pago.getFechaPago();
+                    rowData[i][1] = pago.getMonto();
+                }
+                DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
+                pnPagos.setCambiarTablaPagos(model);
+            }
+        });
         btn_todos.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 tabla.setModel(lotesModel);
