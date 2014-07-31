@@ -27,7 +27,7 @@ class VistaUrbanizacion extends JPanel {
 
     //private Urbanizacion urbanizacion;
     private JTextField label_find;
-    private JButton button_find;
+    private JComboBox<String> cb_tipo_busqueda;
     private JTable tabla;
     private JTable tabla_cliente;
     private PnPagos pnPagos;
@@ -36,7 +36,8 @@ class VistaUrbanizacion extends JPanel {
     public VistaUrbanizacion() {
         //this.urbanizacion = _urbanizacion;
         label_find = new JTextField();
-        button_find = new JButton("Buscar..");
+        cb_tipo_busqueda = new JComboBox<>(new String[]{"Nombre", "Apellido Paterno", "Apellido Materno"});
+        cb_tipo_busqueda.setSelectedIndex(0);
         pnPagos = new PnPagos();
         tabla = new JTable();
         tabla_cliente = new JTable(new MyTableModel2());
@@ -77,7 +78,7 @@ class VistaUrbanizacion extends JPanel {
                 });
         
         panel.add(label_find, BorderLayout.CENTER);
-//        panel.add(button_find, BorderLayout.EAST);
+        panel.add(cb_tipo_busqueda, BorderLayout.WEST);
         add(panel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(scrollPane1, BorderLayout.SOUTH);
@@ -136,9 +137,9 @@ class VistaUrbanizacion extends JPanel {
 
     public void filterText() {
         RowFilter<DefaultTableModel, Object> filter = null;
-
         try {
-            filter = RowFilter.regexFilter(label_find.getText(), 2);
+            int indice = cb_tipo_busqueda.getSelectedIndex();
+            filter = RowFilter.regexFilter(label_find.getText(), 2 + indice);
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
