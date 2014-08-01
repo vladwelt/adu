@@ -66,8 +66,8 @@ class VistaUrbanizacion extends JPanel {
 
         button_add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-
-                System.out.println("Venta");
+                addVenta(null);
+                //System.out.println("Venta");
             }
         });
 
