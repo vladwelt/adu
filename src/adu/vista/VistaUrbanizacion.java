@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 //import java.awt.event.MouseAdapter;
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.lang.Integer;
 
@@ -224,6 +225,7 @@ class VistaUrbanizacion extends JPanel {
         int result = JOptionPane.showConfirmDialog(frame, form,
                 "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
+
         if (result == JOptionPane.OK_OPTION) {
             //try {
             //TODO Verificacion de datos correctos
@@ -256,7 +258,5 @@ class VistaUrbanizacion extends JPanel {
 
     public void addPago() {
         JPanel form = new JPanel(new GridLayout(0, 1));
-
-        //form.add        
     }
 }
