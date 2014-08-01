@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 
 public class Urbanizacion {
 
@@ -111,6 +112,15 @@ public class Urbanizacion {
         }
         System.out.println("cantidad de lotes : " + res.size());
         return res;
+    }
+
+    public Lote getLote(int numero_lote) {
+        for (Lote lote : getLotes()) {
+            if(lote.getNumero_lote() == numero_lote) {
+                return lote;
+            }
+        }
+        return null;
     }
 
 }

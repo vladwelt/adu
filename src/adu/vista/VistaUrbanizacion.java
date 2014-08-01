@@ -5,19 +5,22 @@ import adu.modelo.Lote;
 import adu.modelo.Pago;
 import adu.modelo.Urbanizacion;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 //import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.event.*;
+import java.awt.event.MouseAdapter;
 import java.lang.Integer;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.event.*;
+import javax.swing.table.*;
 
 class VistaUrbanizacion extends JPanel {
 
@@ -130,8 +133,8 @@ class VistaUrbanizacion extends JPanel {
             }
         });
 
-        Action cobrar = new AbstractAction()
-        {
+        Action cobrar;
+        cobrar = new AbstractAction()  {
             public void actionPerformed(ActionEvent e)
             {
                 JTable table = (JTable)e.getSource();
@@ -151,7 +154,7 @@ class VistaUrbanizacion extends JPanel {
 
                 form.add(new JLabel("Numero de Lote"));
                 JTextField num_lote = new JTextField();
-                num_lote.setText(model.getValueAt(index,1).toString());
+                num_lote.setText(model.getValueAt(index,0).toString());
                 num_lote.setEditable(false);
                 form.add(num_lote);
 
@@ -164,8 +167,24 @@ class VistaUrbanizacion extends JPanel {
                 form.add(fecha);
 
                 int result = JOptionPane.showConfirmDialog(null, form,
-                "Cobrar", JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE);
+                        "Cobrar", JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE);
+                if(result == JOptionPane.OK_OPTION) {
+                    try {
+                        int numero_lote = Integer.parseInt(num_lote.getText());
+                        Lote lote = urbanizacion.getLote(numero_lote);
+                        if(lote == null) {
+                            System.out.println("lote no encontrado null");
+                            return;
+                        }
+                        int cuota = Integer.parseInt(num_lote.getText());
+                        Date fecha_pago  = Date.valueOf(fecha.getText());
+                        lote.pagarCuota(cuota, fecha_pago);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "no se registro el cobro");
+                    }
+                    
+                }
             }
         };
 
@@ -191,7 +210,6 @@ class VistaUrbanizacion extends JPanel {
 
     public void addVenta(JFrame frame) {
         JPanel form = new JPanel(new GridLayout(0, 1));
-        
         form.add(new JLabel("CLIENTE :"));
         form.add(new JLabel("C.I."));
         JTextField ci = new JTextField();

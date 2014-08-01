@@ -69,16 +69,15 @@ public class Lote {
     public int getId() {
         int myid = 0;
         try {
-            String query = "select id from lote where numlote = "+ this.numero_lote +";";
+            String query = "select id from lote where numlote = " + this.numero_lote + ";";
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
-            if(resultSet.next())
-            {
+            if (resultSet.next()) {
                 myid = resultSet.getInt("id");
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE,null, ex);
+            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return myid;
     }
@@ -160,7 +159,7 @@ public class Lote {
 
     public double getSumaPagos() {
         ArrayList<Pago> pagos = getPagos();
-        double res =0;
+        double res = 0;
         for (Pago pago : pagos) {
             res = res + pago.getMonto();
         }
@@ -171,7 +170,7 @@ public class Lote {
         ArrayList<Pago> pagos = new ArrayList<>();
         Pago pago = null;
         try {
-            String query = "select * from pago,venta where venta_id=venta.id and lote_id='"+this.id+"';";
+            String query = "select * from pago,venta where venta_id=venta.id and lote_id='" + this.id + "';";
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             int id;
@@ -196,6 +195,7 @@ public class Lote {
     public void save() throws SQLException {
         Conexion conexion = Conexion.getConexion();
         Connection connection = conexion.getConnection();
+
         String query = "insert into lote(urbanizacion_id,numero_lote,descripcion,ancho,largo,precio)values(?,?,?,?);";
 
         PreparedStatement prepareStatement = connection.prepareStatement(query);
@@ -207,16 +207,34 @@ public class Lote {
         prepareStatement.setDouble(6, precio);
         prepareStatement.execute();
     }
-    
-    public void pagarCuota(double monto ,Date fecha_pago) throws SQLException {
+
+    public void pagarCuota(double monto, Date fecha_pago) throws SQLException {
         Conexion conexion = Conexion.getConexion();
         Connection connection = conexion.getConnection();
         String query = "insert into pago(venta_id,fecha_pago,monto)values(?,?,?);";
         PreparedStatement prepareStatement = connection.prepareStatement(query);
-        prepareStatement.setInt(1, id);
+        int id_venta = getIdVenta();
+        prepareStatement.setInt(1, id_venta);
         prepareStatement.setDate(2, fecha_pago);
         prepareStatement.setDouble(3, monto);
         prepareStatement.execute();
+    }
+
+    private int getIdVenta() {
+        int myid = -1;
+        try {
+            String query = "select * from venta where lote_id="+this.id+";";
+            System.out.println(query);
+            Connection connection = Conexion.getConexion().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if (resultSet.next()) {
+                myid = resultSet.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return myid;
     }
 
 }
