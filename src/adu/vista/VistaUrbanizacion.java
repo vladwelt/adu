@@ -62,6 +62,7 @@ class VistaUrbanizacion extends JPanel {
 
         button_add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+
                 System.out.println("Venta");
             }
         });
@@ -90,7 +91,8 @@ class VistaUrbanizacion extends JPanel {
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int indice = tabla.getSelectedRow();
-                if (indice < 0) {
+                int index = tabla.getSelectedColumn();
+                if (indice < 0 || index > 6) {
                     System.out.println("indice negativo seleccionado de la tabla de clientes");
                     return;
                 }
@@ -128,7 +130,38 @@ class VistaUrbanizacion extends JPanel {
         {
             public void actionPerformed(ActionEvent e)
             {
+                JTable table = (JTable)e.getSource();
+                int index = Integer.valueOf( e.getActionCommand() );
+                DefaultTableModel model = (DefaultTableModel)table.getModel();
+                model.getValueAt(index,1);
+                JPanel form = new JPanel(new GridLayout(0, 1));
+        
+                form.add(new JLabel("COBRAR :"));
+                form.add(new JLabel("Nombre"));
+                JTextField nomcompleto = new JTextField();
+                nomcompleto.setText(model.getValueAt(index,2)+" "+
+                        model.getValueAt(index,3)+" "+
+                        model.getValueAt(index,4));
+                nomcompleto.setEditable(false);
+                form.add(nomcompleto);
 
+                form.add(new JLabel("Numero de Lote"));
+                JTextField num_lote = new JTextField();
+                num_lote.setText(model.getValueAt(index,1).toString());
+                num_lote.setEditable(false);
+                form.add(num_lote);
+
+                form.add(new JLabel("Monto"));
+                JTextField monto = new JTextField();
+                form.add(monto);
+
+                form.add(new JLabel("fecha"));
+                JTextField fecha = new JTextField();
+                form.add(fecha);
+
+                int result = JOptionPane.showConfirmDialog(null, form,
+                "Cobrar", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
             }
         };
 
