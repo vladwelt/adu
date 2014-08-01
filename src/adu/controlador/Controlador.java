@@ -35,7 +35,8 @@ public class Controlador implements ActionListener {
                     "Apellido Paterno",
                     "Apellido Materno",
                     "Total",
-                    "Deuda"};
+                    "Deuda",
+                    "Detalles"};
                 Object rowData[][] = new Object[lotes.size()][columnNames.length];
                 for (int i = 0; i < rowData.length; i++) {
                     Lote lote = lotes.get(i);
@@ -54,10 +55,10 @@ public class Controlador implements ActionListener {
                     }
                     rowData[i][5] = lote.getPrecio();
                     rowData[i][6] = lote.getPrecio() - lote.getSumaPagos();
-//                    rowData[i][6] = 
+                    rowData[i][7] = "Cobrar";
                 }
                 DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
-                vista.setTablaLotesMdel(model);
+                vista.setTablaLotesMdel(model,urbanizacion);
             }
         });
 
@@ -65,14 +66,8 @@ public class Controlador implements ActionListener {
 
         vista.addMenuActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource() == vista.getMenuAgregarCliente()) {
-                    vista.addCliente();
-                }
                 if (evt.getSource() == vista.getMenuAgregarUrbanizacion()) {
                     vista.addUrbanizacion();
-                }
-                if (evt.getSource() == vista.getMenuAgregarLote()) {
-                    vista.addLote();
                 }
                 if (evt.getSource() == vista.getMenuAgregarVenta()) {
                     vista.addVenta();

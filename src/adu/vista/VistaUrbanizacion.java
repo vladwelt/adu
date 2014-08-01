@@ -3,60 +3,43 @@ package adu.vista;
 import adu.modelo.Cliente;
 import adu.modelo.Lote;
 import adu.modelo.Pago;
+import adu.modelo.Urbanizacion;
 import java.awt.*;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseAdapter;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-//import java.awt.event.MouseAdapter;
 import java.awt.event.*;
 import java.lang.Integer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.*;
 import javax.swing.event.*;
 
 class VistaUrbanizacion extends JPanel {
 
-    //private Urbanizacion urbanizacion;
+    private Urbanizacion urbanizacion;
     private JTextField label_find;
     private JComboBox<String> cb_tipo_busqueda;
     private JTable tabla;
-    private JTable tabla_cliente;
     private PnPagos pnPagos;
     private TableRowSorter<DefaultTableModel> sorter;
+    private int id_urbanizacion;
+    private JButton button_add;
     
     public VistaUrbanizacion() {
         //this.urbanizacion = _urbanizacion;
+        button_add = new JButton("Vender");
         label_find = new JTextField();
         cb_tipo_busqueda = new JComboBox<>(new String[]{"Nombre", "Apellido Paterno", "Apellido Materno"});
         cb_tipo_busqueda.setSelectedIndex(0);
         pnPagos = new PnPagos();
         tabla = new JTable();
-        tabla_cliente = new JTable(new MyTableModel2());
-
-        tabla_cliente.setPreferredScrollableViewportSize(new Dimension(200, 20));
         tabla.setFillsViewportHeight(true);
         tabla.setAutoCreateRowSorter(true);
-
-        tabla_cliente.setFillsViewportHeight(true);
-        tabla_cliente.setAutoCreateRowSorter(true);
-        tabla_cliente.setRowHeight(20);
-        tabla_cliente.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         setLayout(new BorderLayout());
 
         JScrollPane scrollPane = new JScrollPane(tabla);
-        JScrollPane scrollPane1 = new JScrollPane(tabla_cliente,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         label_find.setColumns(50);
@@ -76,24 +59,33 @@ class VistaUrbanizacion extends JPanel {
                         filterText();
                     }
                 });
-        
+
+        button_add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                System.out.println("Venta");
+            }
+        });
+
+
         panel.add(label_find, BorderLayout.CENTER);
         panel.add(cb_tipo_busqueda, BorderLayout.WEST);
+        panel.add(button_add, BorderLayout.EAST);
         add(panel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
-        add(scrollPane1, BorderLayout.SOUTH);
-        add(pnPagos, BorderLayout.EAST);
     }
     private DefaultTableModel lotesModel;
 
-    public VistaUrbanizacion(DefaultTableModel model) {
+    public VistaUrbanizacion(DefaultTableModel model,
+            Urbanizacion _urbanizacion) {
         this();
+        this.urbanizacion = _urbanizacion;
         tabla.setModel(model);
         this.lotesModel = model;
 
         sorter = new TableRowSorter<DefaultTableModel>(model);
         tabla.setRowSorter(sorter);
         tabla.setFillsViewportHeight(true);
+        tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -124,15 +116,28 @@ class VistaUrbanizacion extends JPanel {
                 
                 DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
                 pnPagos.setCambiarTablaPagos(model);
+                JOptionPane.showConfirmDialog(null, pnPagos,
+                "Pagos", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+                tabla.clearSelection();
+
             }
         });
+
+        Action cobrar = new AbstractAction()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+
+            }
+        };
+
+        ButtonColumn buttonColumn = new ButtonColumn(tabla, cobrar, 7);
     }
 
-    void setModel(DefaultTableModel model) {
+    public void setModel(DefaultTableModel model) {
         tabla = new JTable(model);
-
         setVisible(true);
-//        tabla.setModel(model);
     }
 
     public void filterText() {
@@ -146,9 +151,10 @@ class VistaUrbanizacion extends JPanel {
         sorter.setRowFilter(filter);
     }
 
-    public void addCliente(JFrame frame) {
+    public void addVenta(JFrame frame) {
         JPanel form = new JPanel(new GridLayout(0, 1));
-
+        
+        form.add(new JLabel("CLIENTE :"));
         form.add(new JLabel("C.I."));
         JTextField ci = new JTextField();
         form.add(ci);
@@ -169,13 +175,6 @@ class VistaUrbanizacion extends JPanel {
         JTextField dir = new JTextField();
         form.add(dir);
 
-        int result = JOptionPane.showConfirmDialog(frame, form,
-                "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            //TODO evaluacion de la respuesta 
-            //y captura de datos llenados
-        }
         form.add(new JLabel("Telefono Fijo"));
         JTextField tf = new JTextField();
         form.add(tf);
@@ -184,21 +183,65 @@ class VistaUrbanizacion extends JPanel {
         JTextField cel = new JTextField();
         form.add(cel);
 
-        result = JOptionPane.showConfirmDialog(frame, form,
+        form.add(new JSeparator(SwingConstants.HORIZONTAL));
+
+        form.add(new JLabel("LOTE :"));
+        form.add(new JLabel("Numero de lote"));
+        JTextField numlote = new JTextField();
+        form.add(numlote);
+
+        form.add(new JLabel("Descripcion"));
+        JTextField descr = new JTextField();
+        form.add(descr);
+
+        form.add(new JLabel("Ancho"));
+        JTextField ancho = new JTextField();
+        form.add(ancho);
+
+        form.add(new JLabel("Largo"));
+        JTextField largo = new JTextField();
+        form.add(largo);
+
+        form.add(new JLabel("Precio(Bs)"));
+        JTextField precio = new JTextField();
+        form.add(precio);
+
+        form.add(new JSeparator(SwingConstants.HORIZONTAL));
+
+        form.add(new JLabel("VENTA :"));
+        form.add(new JLabel("Cantidad de cuotas"));
+        JTextField cantcuotas = new JTextField();
+        form.add(cantcuotas);
+
+        form.add(new JLabel("Fecha"));
+        JTextField fecha = new JTextField();
+        form.add(fecha);
+
+        int result = JOptionPane.showConfirmDialog(frame, form,
                 "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
+
         if (result == JOptionPane.OK_OPTION) {
             //try {
             //TODO Verificacion de datos correctos
             int numci = Integer.parseInt(ci.getText());
             int numtf = Integer.parseInt(tf.getText());
             int numcel = Integer.parseInt(cel.getText());
+            double numlargo = Double.parseDouble(largo.getText());
+            double numancho = Double.parseDouble(ancho.getText());
+            double numprecio = Double.parseDouble(precio.getText());
+            int numloteint = Integer.parseInt(numlote.getText());
             //} catch(Exception e) {
             //  System.out.println("ERROR IN INPUT DATA");
             //}
             Cliente nuevo = new Cliente(numci, nombre.getText(),
                     ap.getText(), am.getText(), dir.getText(),
                     numtf, numcel);
+
+            Lote lote = new Lote(urbanizacion.getId(),
+                    numlargo,numancho,numprecio,numloteint,descr.getText());
+
+//            Venta venta = new Venta();
             try {
                 nuevo.save();
             } catch (SQLException ex) {
@@ -208,59 +251,11 @@ class VistaUrbanizacion extends JPanel {
         }
     }
 
+    public void addPago() {
+        JPanel form = new JPanel(new GridLayout(0, 1));
 
-    class MyTableModel2 extends AbstractTableModel {
+        //form.add
 
-        private String[] columnNames = {"C.I.",
-            "Nombre",
-            "Apellido Paterno",
-            "Apellido Materno",
-            "Detalles",
-            "Total",
-            "Deuda",
-            "uno",
-            "dos",
-            "tres",
-            "cuatro",
-            "cinco"};
-        private Object[][] data = {
-            {new Integer(7989077), "Kathy", "Smith", "Rocha",
-                "button", new Integer(7888), new Integer(89080),
-                "a", "s", "s", "s", "s"}
-        };
-
-        public int getColumnCount() {
-            return columnNames.length;
-        }
-
-        public int getRowCount() {
-            return data.length;
-        }
-
-        public String getColumnName(int col) {
-            return columnNames[col];
-        }
-
-        public Object getValueAt(int row, int col) {
-            return data[row][col];
-        }
-
-        public Class getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
-
-        public boolean isCellEditable(int row, int col) {
-            if (col < 2) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        public void setValueAt(Object value, int row, int col) {
-
-            data[row][col] = value;
-        }
+        
     }
-
 }

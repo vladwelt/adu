@@ -12,8 +12,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class VistaAdu extends JFrame {
 
-    //private VistaUrbanizacion[] panel_urbanizaciones;
-    //private Urbanizacion[] urbanizaciones;
     private VistaUrbanizacion vista;
     private JButton button_add;
     private JTabbedPane panels;
@@ -24,8 +22,6 @@ public class VistaAdu extends JFrame {
     //Init Menus
     private JMenuBar menu_bar;
     private JMenu menu_agregar;
-    private JMenuItem menu_agregar_cliente;
-    private JMenuItem menu_agregar_lote;
     private JMenuItem menu_agregar_urbanizacion;
     private JMenuItem menu_agregar_venta;
     private JMenuItem menu_agregar_pago;
@@ -71,23 +67,17 @@ public class VistaAdu extends JFrame {
         menu_agregar = new JMenu("Agregar");
         menu_bar.add(menu_agregar);
 
-        menu_agregar_cliente = new JMenuItem("+ Cliente");
-        menu_agregar_lote = new JMenuItem("+ Lote");
         menu_agregar_urbanizacion = new JMenuItem("+ Urbanizacion");
         menu_agregar_venta = new JMenuItem("+ Venta");
         menu_agregar_pago = new JMenuItem("+ Pago");
 
         menu_agregar.add(menu_agregar_urbanizacion);
-        menu_agregar.add(menu_agregar_lote);
-        menu_agregar.add(menu_agregar_cliente);
         menu_agregar.add(menu_agregar_venta);
         menu_agregar.add(menu_agregar_pago);
     }
 
     public void addMenuActionListener(ActionListener listener) {
         menu_agregar_urbanizacion.addActionListener(listener);
-        menu_agregar_lote.addActionListener(listener);
-        menu_agregar_cliente.addActionListener(listener);
         menu_agregar_venta.addActionListener(listener);
         menu_agregar_pago.addActionListener(listener);
     }
@@ -121,9 +111,10 @@ public class VistaAdu extends JFrame {
         panels.setTabComponentAt(i, new ButtonTabComponent(panels));
     }
 
-    public void setTablaLotesMdel(DefaultTableModel model) {
+    public void setTablaLotesMdel(DefaultTableModel model ,
+            Urbanizacion _urbanizacion) {
         String nombre = getSelectedUrbanizacion().toString();
-        panels.add(nombre, new VistaUrbanizacion(model));
+        panels.add(nombre, new VistaUrbanizacion(model,_urbanizacion));
         iniciarTabComponent(pes);
         pes++;
 
@@ -133,14 +124,8 @@ public class VistaAdu extends JFrame {
     }
 
     //GET menus
-    public JMenuItem getMenuAgregarCliente() {
-        return this.menu_agregar_cliente;
-    }
     public JMenuItem getMenuAgregarUrbanizacion() {
         return this.menu_agregar_urbanizacion;
-    }
-    public JMenuItem getMenuAgregarLote() {
-        return this.menu_agregar_lote;
     }
     public JMenuItem getMenuAgregarVenta() {
         return this.menu_agregar_venta;
@@ -152,16 +137,6 @@ public class VistaAdu extends JFrame {
     //VIEW AGREGAR
     public void addUrbanizacion() {
         System.out.println("urr");
-    }
-
-    public void addCliente() {
-        
-        System.out.println("Cliente"); 
-    }
-
-    public void addLote() {
-    
-        System.out.println("lote");
     }
 
     public void addVenta() {
