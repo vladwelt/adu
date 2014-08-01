@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,23 +38,49 @@ public class Lote {
     }
 
     private int id;
-    private String descripcion;
+    private int id_urbanizacion;
     private int numero_lote;
+    private String descripcion;
     private double largo;
     private double ancho;
     private double precio;
 
-    public Lote(int _id, double _largo, double _ancho,
-            double _precio, int numero_lote) {
-        this.id = _id;
+    public Lote(int _id_urbanizacion, double _largo, double _ancho,
+            double _precio, int _numero_lote, String _descripcion) {
+        this.id_urbanizacion = _id_urbanizacion;
         this.largo = _largo;
         this.ancho = _ancho;
         this.precio = _precio;
-        this.numero_lote = numero_lote;
+        this.numero_lote = _numero_lote;
+        this.descripcion = _descripcion;
+    }
+
+    public Lote(int _id, int _id_urbanizacion, double _largo, double _ancho,
+            double _precio, int _numero_lote, String _descripcion) {
+        this.id = _id;
+        this.id_urbanizacion = _id_urbanizacion;
+        this.largo = _largo;
+        this.ancho = _ancho;
+        this.precio = _precio;
+        this.numero_lote = _numero_lote;
+        this.descripcion = _descripcion;
     }
 
     public int getId() {
-        return this.id;
+        int myid = 0;
+        try {
+            String query = "select id from lote where numlote = "+ this.numero_lote +";";
+            Connection connection = Conexion.getConexion().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if(resultSet.next())
+            {
+                myid = resultSet.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE,null, ex);
+        }
+        return myid;
     }
 
     public double getLargo() {
@@ -144,7 +171,7 @@ public class Lote {
         ArrayList<Pago> pagos = new ArrayList<>();
         Pago pago = null;
         try {
-            String query = "select * from pago,venta where venta_id=venta.id and lote_id="+this.id+";";
+            String query = "select * from pago,venta where venta_id=venta.id and lote_id='"+this.id+"';";
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             int id;
@@ -164,6 +191,21 @@ public class Lote {
             Logger.getLogger(Lote.class.getName()).log(Level.SEVERE, null, ex);
         }
         return pagos;
+    }
+
+    public void save() throws SQLException {
+        Conexion conexion = Conexion.getConexion();
+        Connection connection = conexion.getConnection();
+        String query = "insert into lote(urbanizacion_id,numero_lote,descripcion,ancho,largo,precio)values(?,?,?,?);";
+
+        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        prepareStatement.setInt(1, id_urbanizacion);
+        prepareStatement.setInt(2, numero_lote);
+        prepareStatement.setString(3, descripcion);
+        prepareStatement.setDouble(4, ancho);
+        prepareStatement.setDouble(5, largo);
+        prepareStatement.setDouble(6, precio);
+        prepareStatement.execute();
     }
 
 }

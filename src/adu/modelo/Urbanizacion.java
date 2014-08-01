@@ -46,6 +46,23 @@ public class Urbanizacion {
         this.id = id;
     }
 
+    public int getId() {
+        int myid = 0;
+        try {
+            String query = "select id from urbanizacion where nombre = \""+ this.nombre +"\";";
+            Connection connection = Conexion.getConexion().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if(resultSet.next())
+            {
+                myid = resultSet.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE,null, ex);
+        }
+        return myid;
+    }
+
     @Override
     public String toString() {
         return this.nombre; //To change body of generated methods, choose Tools | Templates.
@@ -71,6 +88,7 @@ public class Urbanizacion {
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             int id;
+            int id_urbanizacion;
             int numero_lote;
             String descripcion;
             double ancho;
@@ -79,13 +97,13 @@ public class Urbanizacion {
             Lote lote;
             while (resultSet.next()) {
                 id = resultSet.getInt("id");
+                id_urbanizacion = resultSet.getInt("urbanizacion_id");
                 numero_lote = resultSet.getInt("numero_lote");
                 descripcion = resultSet.getString("descripcion");
                 ancho = resultSet.getDouble("ancho");
                 largo = resultSet.getDouble("largo");
                 precio = resultSet.getDouble("precio");
-                lote = new Lote(id, largo, ancho, precio, numero_lote);
-                lote.setDescripcion(descripcion);
+                lote = new Lote(id,id_urbanizacion, largo, ancho, precio, numero_lote,descripcion);
                 res.add(lote);
             }
 //        connection.close();
