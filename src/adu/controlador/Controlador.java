@@ -60,8 +60,30 @@ public class Controlador implements ActionListener {
                 vista.setTablaLotesMdel(model);
             }
         });
-    }
 
+
+
+        vista.addMenuActionListener( new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource() == vista.getMenuAgregarCliente()) {
+                    vista.addCliente();
+                }
+                if (evt.getSource() == vista.getMenuAgregarUrbanizacion()) {
+                    vista.addUrbanizacion();
+                }
+                if (evt.getSource() == vista.getMenuAgregarLote()) {
+                    vista.addLote();
+                }
+                if (evt.getSource() == vista.getMenuAgregarVenta()) {
+                    vista.addVenta();
+                }
+                if (evt.getSource() == vista.getMenuAgregarPago()) {
+                    vista.addPago();
+                }
+            }
+        });
+    }
+    
     public void actionPerformed(ActionEvent evt) {
         //  TODO 
     }
