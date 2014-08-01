@@ -207,5 +207,16 @@ public class Lote {
         prepareStatement.setDouble(6, precio);
         prepareStatement.execute();
     }
+    
+    public void pagarCuota(double monto ,Date fecha_pago) throws SQLException {
+        Conexion conexion = Conexion.getConexion();
+        Connection connection = conexion.getConnection();
+        String query = "insert into pago(venta_id,fecha_pago,monto)values(?,?,?);";
+        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        prepareStatement.setInt(1, id);
+        prepareStatement.setDate(2, fecha_pago);
+        prepareStatement.setDouble(3, monto);
+        prepareStatement.execute();
+    }
 
 }

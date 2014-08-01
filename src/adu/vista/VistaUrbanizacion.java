@@ -54,7 +54,7 @@ class VistaUrbanizacion extends JPanel {
                     public void changedUpdate(DocumentEvent e) {
                         filterText();
                     }
-
+                    
                     public void insertUpdate(DocumentEvent e) {
                         filterText();
                     }
