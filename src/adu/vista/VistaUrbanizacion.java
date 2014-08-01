@@ -5,14 +5,10 @@ import adu.modelo.Lote;
 import adu.modelo.Pago;
 import java.awt.*;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 //import java.awt.event.MouseAdapter;
-import java.awt.event.*;
 import java.lang.Integer;
 
 import java.sql.SQLException;
@@ -139,6 +135,7 @@ class VistaUrbanizacion extends JPanel {
         RowFilter<DefaultTableModel, Object> filter = null;
         try {
             int indice = cb_tipo_busqueda.getSelectedIndex();
+            
             filter = RowFilter.regexFilter(label_find.getText(), 2 + indice);
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
