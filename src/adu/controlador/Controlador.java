@@ -1,7 +1,6 @@
 package adu.controlador;
 
 import adu.modelo.Cliente;
-import adu.modelo.ListaCliente;
 import adu.modelo.Lote;
 import adu.modelo.Urbanizacion;
 import adu.vista.*;
