@@ -68,12 +68,6 @@ public class Controlador implements ActionListener {
                 if (evt.getSource() == vista.getMenuAgregarUrbanizacion()) {
                     vista.addUrbanizacion();
                 }
-                if (evt.getSource() == vista.getMenuAgregarVenta()) {
-                    vista.addVenta();
-                }
-                if (evt.getSource() == vista.getMenuAgregarPago()) {
-                    vista.addPago();
-                }
             }
         });
     }

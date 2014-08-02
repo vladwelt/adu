@@ -23,10 +23,6 @@ public class VistaAdu extends JFrame {
     private JMenuBar menu_bar;
     private JMenu menu_agregar;
     private JMenuItem menu_agregar_urbanizacion;
-    private JMenuItem menu_agregar_venta;
-    private JMenuItem menu_agregar_pago;
-
-
 
     public VistaAdu(String nombre) {
         super(nombre);
@@ -68,18 +64,12 @@ public class VistaAdu extends JFrame {
         menu_bar.add(menu_agregar);
 
         menu_agregar_urbanizacion = new JMenuItem("+ Urbanizacion");
-        menu_agregar_venta = new JMenuItem("+ Venta");
-        menu_agregar_pago = new JMenuItem("+ Pago");
 
         menu_agregar.add(menu_agregar_urbanizacion);
-        menu_agregar.add(menu_agregar_venta);
-        menu_agregar.add(menu_agregar_pago);
     }
 
     public void addMenuActionListener(ActionListener listener) {
         menu_agregar_urbanizacion.addActionListener(listener);
-        menu_agregar_venta.addActionListener(listener);
-        menu_agregar_pago.addActionListener(listener);
     }
 
     public void runTest() {
@@ -127,25 +117,41 @@ public class VistaAdu extends JFrame {
     public JMenuItem getMenuAgregarUrbanizacion() {
         return this.menu_agregar_urbanizacion;
     }
-    public JMenuItem getMenuAgregarVenta() {
-        return this.menu_agregar_venta;
-    } 
-    public JMenuItem getMenuAgregarPago() {
-        return this.menu_agregar_pago;
-    }
 
     //VIEW AGREGAR
     public void addUrbanizacion() {
-        System.out.println("urr");
-    }
+        JPanel form = new JPanel(new GridLayout(0,1));
+        form.add(new JLabel("Nombre"));
+        JTextField nombre = new JTextField();
+        form.add(nombre);
 
-    public void addVenta() {
-    
-        System.out.println("venta");
-    }
+        form.add(new JLabel("Ancho"));
+        JTextField ancho = new JTextField();
+        form.add(ancho);
 
-    public void addPago() {
-    
-        System.out.println("Pago");
+        form.add(new JLabel("Largo"));
+        JTextField largo = new JTextField();
+        form.add(largo);
+
+        form.add(new JLabel("Numero de Lotes"));
+        JTextField numLotes = new JTextField();
+        form.add(numLotes);
+        
+        int result = JOptionPane.showConfirmDialog(null,
+                form,"Agregar Urbanizacion",JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+        if(result == JOptionPane.OK_OPTION) {
+
+            double numancho = Double.parseDouble(ancho.getText());
+            double numlargo = Double.parseDouble(largo.getText());
+            int numlotes = Integer.parseInt(numLotes.getText());
+            Urbanizacion nueva = new Urbanizacion(nombre.getText(),
+                    numancho,numlargo,numlotes);
+            try {
+                nueva.save();
+            } catch (SQLException ex) {
+                System.out.println("ERROR SAVE: Urbanizacion");
+            }
+        }
     }
 }

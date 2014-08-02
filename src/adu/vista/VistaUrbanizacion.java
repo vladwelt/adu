@@ -209,6 +209,9 @@ class VistaUrbanizacion extends JPanel {
     }
 
     public void addVenta(JFrame frame) {
+        JPanel contenedor = new JPanel();
+        contenedor.setLayout(new BoxLayout(contenedor,
+                    BoxLayout.LINE_AXIS));
         JPanel form = new JPanel(new GridLayout(0, 1));
         form.add(new JLabel("CLIENTE :"));
         form.add(new JLabel("C.I."));
@@ -238,42 +241,47 @@ class VistaUrbanizacion extends JPanel {
         form.add(new JLabel("Celular"));
         JTextField cel = new JTextField();
         form.add(cel);
+       
+        contenedor.add(form); 
+        contenedor.add(new JSeparator(SwingConstants.HORIZONTAL));
 
-        form.add(new JSeparator(SwingConstants.HORIZONTAL));
-
-        form.add(new JLabel("LOTE :"));
-        form.add(new JLabel("Numero de lote"));
+        JPanel form1 = new JPanel(new GridLayout(0, 1));
+        form1.add(new JLabel("LOTE :"));
+        form1.add(new JLabel("Numero de lote"));
         JTextField numlote = new JTextField();
-        form.add(numlote);
+        form1.add(numlote);
 
-        form.add(new JLabel("Descripcion"));
+        form1.add(new JLabel("Descripcion"));
         JTextField descr = new JTextField();
-        form.add(descr);
+        form1.add(descr);
 
-        form.add(new JLabel("Ancho"));
+        form1.add(new JLabel("Ancho"));
         JTextField ancho = new JTextField();
-        form.add(ancho);
+        form1.add(ancho);
 
-        form.add(new JLabel("Largo"));
+        form1.add(new JLabel("Largo"));
         JTextField largo = new JTextField();
-        form.add(largo);
+        form1.add(largo);
 
-        form.add(new JLabel("Precio(Bs)"));
+        form1.add(new JLabel("Precio(Bs)"));
         JTextField precio = new JTextField();
-        form.add(precio);
+        form1.add(precio);
+        
+        contenedor.add(form1);
+        contenedor.add(new JSeparator(SwingConstants.HORIZONTAL));
 
-        form.add(new JSeparator(SwingConstants.HORIZONTAL));
-
-        form.add(new JLabel("VENTA :"));
-        form.add(new JLabel("Cantidad de cuotas"));
+        JPanel form2 = new JPanel(new GridLayout(0, 1));
+        form2.add(new JLabel("VENTA :"));
+        form2.add(new JLabel("Cantidad de cuotas"));
         JTextField cantcuotas = new JTextField();
-        form.add(cantcuotas);
+        form2.add(cantcuotas);
 
-        form.add(new JLabel("Fecha"));
+        form2.add(new JLabel("Fecha"));
         JTextField fecha = new JTextField();
-        form.add(fecha);
+        form2.add(fecha);
+        contenedor.add(form2);
 
-        int result = JOptionPane.showConfirmDialog(frame, form,
+        int result = JOptionPane.showConfirmDialog(frame, contenedor,
                 "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
 
