@@ -38,16 +38,16 @@ public class Lote {
     }
 
     private int id;
-    private int id_urbanizacion;
+    private int urbanizacion_id;
     private int numero_lote;
     private String descripcion;
     private double largo;
     private double ancho;
     private double precio;
 
-    public Lote(int _id_urbanizacion, double _largo, double _ancho,
+    public Lote(int _urbanizacion_id, double _largo, double _ancho,
             double _precio, int _numero_lote, String _descripcion) {
-        this.id_urbanizacion = _id_urbanizacion;
+        this.urbanizacion_id = _urbanizacion_id;
         this.largo = _largo;
         this.ancho = _ancho;
         this.precio = _precio;
@@ -55,10 +55,10 @@ public class Lote {
         this.descripcion = _descripcion;
     }
 
-    public Lote(int _id, int _id_urbanizacion, double _largo, double _ancho,
+    public Lote(int _id, int _urbanizacion_id, double _largo, double _ancho,
             double _precio, int _numero_lote, String _descripcion) {
         this.id = _id;
-        this.id_urbanizacion = _id_urbanizacion;
+        this.urbanizacion_id = _urbanizacion_id;
         this.largo = _largo;
         this.ancho = _ancho;
         this.precio = _precio;
@@ -69,7 +69,7 @@ public class Lote {
     public int getId() {
         int myid = 0;
         try {
-            String query = "select id from lote where numlote = " + this.numero_lote + ";";
+            String query = "select id from lote where numero_lote = " + this.numero_lote + ";";
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             if (resultSet.next()) {
@@ -196,10 +196,10 @@ public class Lote {
         Conexion conexion = Conexion.getConexion();
         Connection connection = conexion.getConnection();
 
-        String query = "insert into lote(urbanizacion_id,numero_lote,descripcion,ancho,largo,precio)values(?,?,?,?);";
+        String query = "insert into lote(urbanizacion_id,numero_lote,descripcion,ancho,largo,precio) values(?,?,?,?,?,?);";
 
         PreparedStatement prepareStatement = connection.prepareStatement(query);
-        prepareStatement.setInt(1, id_urbanizacion);
+        prepareStatement.setInt(1, urbanizacion_id);
         prepareStatement.setInt(2, numero_lote);
         prepareStatement.setString(3, descripcion);
         prepareStatement.setDouble(4, ancho);
@@ -211,7 +211,7 @@ public class Lote {
     public void pagarCuota(double monto, Date fecha_pago) throws SQLException {
         Conexion conexion = Conexion.getConexion();
         Connection connection = conexion.getConnection();
-        String query = "insert into pago(venta_id,fecha_pago,monto)values(?,?,?);";
+        String query = "insert into pago(venta_id,fecha_pago,monto) values(?,?,?);";
         PreparedStatement prepareStatement = connection.prepareStatement(query);
         int id_venta = getIdVenta();
         prepareStatement.setInt(1, id_venta);
@@ -235,6 +235,29 @@ public class Lote {
             Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return myid;
+    }
+
+    public boolean vender(int cliente_id, Date date,
+            int cantidad_cuotas) throws SQLException {
+        try {
+        Conexion conexion = Conexion.getConexion();
+        Connection connection = conexion.getConnection();
+
+        String query = "insert into venta(lote_id,cliente_id,cantidad_cuotas,fecha_venta) values(?,?,?,?);";
+
+        PreparedStatement prep = connection.prepareStatement(query);
+
+        prep.setInt(1,this.getId());
+        prep.setInt(2,cliente_id);
+        prep.setInt(3,cantidad_cuotas);
+        prep.setDate(4,date);
+        prep.execute();
+        
+        } catch (Exception ex) {
+            System.out.println("ERROR : " + ex);    
+        }
+
+        return true;
     }
 
 }

@@ -177,7 +177,7 @@ class VistaUrbanizacion extends JPanel {
                             System.out.println("lote no encontrado null");
                             return;
                         }
-                        int cuota = Integer.parseInt(num_lote.getText());
+                        int cuota = Integer.parseInt(monto.getText());
                         Date fecha_pago  = Date.valueOf(fecha.getText());
                         lote.pagarCuota(cuota, fecha_pago);
                     } catch (SQLException ex) {
@@ -295,6 +295,8 @@ class VistaUrbanizacion extends JPanel {
             double numancho = Double.parseDouble(ancho.getText());
             double numprecio = Double.parseDouble(precio.getText());
             int numloteint = Integer.parseInt(numlote.getText());
+            int numcantlotes = Integer.parseInt(cantcuotas.getText());
+            Date fecha_venta = Date.valueOf(fecha.getText());
             //} catch(Exception e) {
             //  System.out.println("ERROR IN INPUT DATA");
             //}
@@ -303,11 +305,20 @@ class VistaUrbanizacion extends JPanel {
                     numtf, numcel);
 
             Lote lote = new Lote(urbanizacion.getId(),
-                    numlargo,numancho,numprecio,numloteint,descr.getText());
+                    numlargo,numancho,numprecio,numloteint,
+                    descr.getText());
 
-//            Venta venta = new Venta();
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            model.addRow(new Object[]{lote.getNumero_lote(),
+                nuevo.getCi(), nuevo.getNombre(),
+                nuevo.getApellidoPaterno(), nuevo.getApellidoMaterno(),
+                lote.getPrecio(),lote.getPrecio(),"Cobrar"});
+
             try {
                 nuevo.save();
+                lote.save();
+                lote.vender(nuevo.getCi(),fecha_venta,numcantlotes);
+
             } catch (SQLException ex) {
                 System.out.println("ERROR SAVE: Cliente");
             }

@@ -17,7 +17,7 @@ create table urbanizacion(
 );
 
 create table lote(
-    id integer primary key,
+    id serial primary key,
     urbanizacion_id integer references urbanizacion(id),
     numero_lote integer,
     descripcion varchar(255),
