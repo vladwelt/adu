@@ -4,11 +4,11 @@ import adu.modelo.Cliente;
 import adu.modelo.Lote;
 import adu.modelo.Pago;
 import adu.modelo.Urbanizacion;
+import com.toedter.calendar.JDateChooser;
 import java.awt.*;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 //import java.awt.event.MouseAdapter;
-import java.awt.Dimension;
 import java.awt.event.*;
 import java.awt.event.MouseAdapter;
 import java.lang.Integer;
@@ -16,8 +16,6 @@ import java.lang.Integer;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -163,7 +161,8 @@ class VistaUrbanizacion extends JPanel {
                 form.add(monto);
 
                 form.add(new JLabel("fecha"));
-                JTextField fecha = new JTextField();
+                JDateChooser fecha = new JDateChooser();
+//                JTextField fecha = new JTextField();
                 form.add(fecha);
 
                 int result = JOptionPane.showConfirmDialog(null, form,
@@ -178,12 +177,16 @@ class VistaUrbanizacion extends JPanel {
                             return;
                         }
                         int cuota = Integer.parseInt(monto.getText());
-                        Date fecha_pago  = Date.valueOf(fecha.getText());
+//                        Date fecha_pago  = Date.valueOf(fecha.getText());
+                        
+                        Date fecha_pago  = new Date(fecha.getDate().getTime());
                         lote.pagarCuota(cuota, fecha_pago);
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "no se registro el cobro");
                     }
                     
+                } else {
+                    System.out.println(new Date(fecha.getDate().getTime()));
                 }
             }
         };
