@@ -16,6 +16,7 @@ import java.lang.Integer;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -161,8 +162,9 @@ class VistaUrbanizacion extends JPanel {
                 form.add(monto);
 
                 form.add(new JLabel("fecha"));
-                JDateChooser fecha = new JDateChooser();
-//                JTextField fecha = new JTextField();
+                
+                JDateChooser fecha = new JDateChooser(new java.util.Date());
+                fecha.setLocale(new Locale("ES"));
                 form.add(fecha);
 
                 int result = JOptionPane.showConfirmDialog(null, form,
@@ -176,9 +178,7 @@ class VistaUrbanizacion extends JPanel {
                             System.out.println("lote no encontrado null");
                             return;
                         }
-                        int cuota = Integer.parseInt(monto.getText());
-//                        Date fecha_pago  = Date.valueOf(fecha.getText());
-                        
+                        int cuota = Integer.parseInt(monto.getText());                        
                         Date fecha_pago  = new Date(fecha.getDate().getTime());
                         lote.pagarCuota(cuota, fecha_pago);
                     } catch (SQLException ex) {
