@@ -260,4 +260,8 @@ public class Lote {
         return true;
     }
 
+    public double getDeuda() {
+        return getPrecio() - getSumaPagos();
+    }
+
 }

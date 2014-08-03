@@ -181,6 +181,7 @@ class VistaUrbanizacion extends JPanel {
                         int cuota = Integer.parseInt(monto.getText());                        
                         Date fecha_pago  = new Date(fecha.getDate().getTime());
                         lote.pagarCuota(cuota, fecha_pago);
+                        tabla.getModel().setValueAt(lote.getDeuda(), index, 6);
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "no se registro el cobro");
                     }
