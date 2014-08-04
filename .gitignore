@@ -8,5 +8,4 @@
 *.xml
 *.mf
 /build/
-/lib
 /dist/
