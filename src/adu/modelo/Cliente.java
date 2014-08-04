@@ -95,7 +95,7 @@ public class Cliente {
     public void save() throws SQLException {
         Conexion conexion = Conexion.getConexion();
         Connection connection = conexion.getConnection();
-        String query = "insert into cliente (ci,nombre,apellido_paterno,apellido_materno,direccion,telefono_fijo,telefono_celular)values(?,?,?,?,?,?,?);";
+        String query = "insert into cliente (id,nombre,apellido_paterno,apellido_materno,direccion,telefono_fijo,celular)values(?,?,?,?,?,?,?);";
         PreparedStatement prepareStatement = connection.prepareStatement(query);
         prepareStatement.setInt(1, ci);
         prepareStatement.setString(2, nombre);

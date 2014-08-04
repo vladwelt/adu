@@ -27,13 +27,13 @@ public class ListaCliente {
         String direccion; int fijo; int celular;
         Cliente cliente;
         while(resultSet.next()) {
-            ci = resultSet.getInt("ci");
+            ci = resultSet.getInt("id");
             nombre = resultSet.getString("nombre");
             paterno = resultSet.getString("apellido_paterno");
             materno = resultSet.getString("apellido_materno");
             direccion = resultSet.getString("direccion");
             fijo = resultSet.getInt("telefono_fijo");
-            celular = resultSet.getInt("telefono_celular");
+            celular = resultSet.getInt("celular");
             cliente = new Cliente(ci, nombre, paterno, materno, direccion, fijo, celular);
             res.agregar(cliente);
         }

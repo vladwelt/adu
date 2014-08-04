@@ -118,7 +118,7 @@ public class VistaAdu extends JFrame {
 
     public void runTest() {
         panels.removeAll();
-        setSize(new Dimension(400, 200));
+        setSize(new Dimension(600, 400));
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -152,7 +152,7 @@ public class VistaAdu extends JFrame {
         iniciarTabComponent(pes);
         pes++;
 
-        setSize(new Dimension(400, 200));
+        setSize(new Dimension(600, 400));
         setLocationRelativeTo(null);
         setVisible(true);
     }

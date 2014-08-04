@@ -53,7 +53,7 @@ public class Controlador implements ActionListener {
                         rowData[i][4] = cliente.getApellidoMaterno();
                     }
                     rowData[i][5] = lote.getPrecio();
-                    rowData[i][6] = lote.getPrecio() - lote.getSumaPagos();
+                    rowData[i][6] = lote.getDeuda();
                     rowData[i][7] = "Cobrar";
                 }
                 DefaultTableModel model = new DefaultTableModel(rowData, columnNames);

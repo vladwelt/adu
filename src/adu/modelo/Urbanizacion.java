@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTextField;
 
 public class Urbanizacion {
 
@@ -50,16 +49,15 @@ public class Urbanizacion {
     public int getId() {
         int myid = 0;
         try {
-            String query = "select id from urbanizacion where nombre = \""+ this.nombre +"\";";
+            String query = "select id from urbanizacion where nombre = \"" + this.nombre + "\";";
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
-            if(resultSet.next())
-            {
+            if (resultSet.next()) {
                 myid = resultSet.getInt("id");
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE,null, ex);
+            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return myid;
     }
@@ -80,13 +78,14 @@ public class Urbanizacion {
         prepareStatement.setInt(4, cantidad_lotes);
         prepareStatement.execute();
 
-        this.id=getId();
+        this.id = getId();
     }
 
     public ArrayList<Lote> getLotes() {
         ArrayList<Lote> res = new ArrayList<>();
         try {
-            String query = "select * from lote where urbanizacion_id=" + this.id + ";";
+//            String query = "select * from lote where urbanizacion_id=" + this.id + ";";
+            String query = "select * from lote, manzano where manzano_id=manzano.id and urbanizacion_id=" + this.id + ";";
             System.out.println(query);
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
@@ -99,14 +98,14 @@ public class Urbanizacion {
             double precio;
             Lote lote;
             while (resultSet.next()) {
-                id = resultSet.getInt("id");
+                id = resultSet.getInt("lote.id");
                 id_urbanizacion = resultSet.getInt("urbanizacion_id");
                 numero_lote = resultSet.getInt("numero_lote");
                 descripcion = resultSet.getString("descripcion");
-                ancho = resultSet.getDouble("ancho");
-                largo = resultSet.getDouble("largo");
+                ancho = resultSet.getDouble("lote.ancho");
+                largo = resultSet.getDouble("lote.largo");
                 precio = resultSet.getDouble("precio");
-                lote = new Lote(id,id_urbanizacion, largo, ancho, precio, numero_lote,descripcion);
+                lote = new Lote(id, id_urbanizacion, largo, ancho, precio, numero_lote, descripcion);
                 res.add(lote);
             }
 //        connection.close();
@@ -118,7 +117,7 @@ public class Urbanizacion {
 
     public Lote getLote(int numero_lote) {
         for (Lote lote : getLotes()) {
-            if(lote.getNumero_lote() == numero_lote) {
+            if (lote.getNumero_lote() == numero_lote) {
                 return lote;
             }
         }
