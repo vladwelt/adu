@@ -149,6 +149,7 @@ public class VistaAdu extends JFrame {
                     numancho,numlargo,numlotes);
             try {
                 nueva.save();
+                lista_urbanizaciones.addItem(nueva);
             } catch (SQLException ex) {
                 System.out.println("ERROR SAVE: Urbanizacion");
             }

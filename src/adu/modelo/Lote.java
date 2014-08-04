@@ -206,6 +206,8 @@ public class Lote {
         prepareStatement.setDouble(5, largo);
         prepareStatement.setDouble(6, precio);
         prepareStatement.execute();
+
+        this.id = getId();
     }
 
     public void pagarCuota(double monto, Date fecha_pago) throws SQLException {

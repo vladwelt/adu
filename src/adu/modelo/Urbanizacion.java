@@ -79,6 +79,8 @@ public class Urbanizacion {
         prepareStatement.setDouble(3, largo);
         prepareStatement.setInt(4, cantidad_lotes);
         prepareStatement.execute();
+
+        this.id=getId();
     }
 
     public ArrayList<Lote> getLotes() {
