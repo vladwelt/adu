@@ -195,7 +195,7 @@ public class VistaAdu extends JFrame {
                 nueva.save();
                 lista_urbanizaciones.addItem(nueva);
             } catch (SQLException ex) {
-                System.out.println("ERROR SAVE: Urbanizacion");
+                System.out.println(ex.getMessage());
             }
         }
     }
