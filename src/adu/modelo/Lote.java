@@ -34,7 +34,7 @@ public class Lote {
     private double precio;
 
     public Lote(int _manzano_id, double _largo, double _ancho,
-            double _precio, int _numero_lote, String _descripcion) {
+                double _precio, int _numero_lote, String _descripcion) {
         this.manzano_id = _manzano_id;
         this.largo = _largo;
         this.ancho = _ancho;

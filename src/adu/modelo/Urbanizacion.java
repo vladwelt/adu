@@ -90,7 +90,7 @@ public class Urbanizacion {
             Connection connection = Conexion.getConexion().getConnection();
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             int id;
-            int id_urbanizacion;
+            int id_manzano;
             int numero_lote;
             String descripcion;
             double ancho;
@@ -99,13 +99,13 @@ public class Urbanizacion {
             Lote lote;
             while (resultSet.next()) {
                 id = resultSet.getInt("lote.id");
-                id_urbanizacion = resultSet.getInt("urbanizacion_id");
+                id_manzano = resultSet.getInt("manzano_id");
                 numero_lote = resultSet.getInt("numero_lote");
                 descripcion = resultSet.getString("descripcion");
                 ancho = resultSet.getDouble("lote.ancho");
                 largo = resultSet.getDouble("lote.largo");
                 precio = resultSet.getDouble("precio");
-                lote = new Lote(id, id_urbanizacion, largo, ancho, precio, numero_lote, descripcion);
+                lote = new Lote(id, id_manzano, largo, ancho, precio, numero_lote, descripcion);
                 res.add(lote);
             }
 //        connection.close();
