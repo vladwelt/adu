@@ -110,8 +110,8 @@ public class Urbanizacion {
             }
 //        connection.close();
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
-        System.out.println("cantidad de lotes : " + res.size());
         return res;
     }
 
