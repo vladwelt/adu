@@ -34,7 +34,7 @@ public class Lote {
     private double precio;
 
     public Lote(int _manzano_id, double _largo, double _ancho,
-                double _precio, int _numero_lote, String _descripcion) {
+            double _precio, int _numero_lote, String _descripcion) {
         this.manzano_id = _manzano_id;
         this.largo = _largo;
         this.ancho = _ancho;
@@ -183,13 +183,24 @@ public class Lote {
         return pagos;
     }
 
-    public void save() throws SQLException {
+    public void save(Urbanizacion urbanizacion) throws SQLException {
         Conexion conexion = Conexion.getConexion();
         Connection connection = conexion.getConnection();
+        String query; PreparedStatement prepareStatement;
+        if (Manzano.existe(urbanizacion, manzano_id)) {
+            manzano_id = Manzano.getId(urbanizacion, manzano_id);
+        } else {
+            query = "insert into manzano(numero_manzano, urbanizacion_id) values(?,?);";
+            prepareStatement = connection.prepareStatement(query);
+            prepareStatement.setInt(1, manzano_id);
+            prepareStatement.setInt(2, urbanizacion.getId());
+            prepareStatement.execute();
+            manzano_id = Manzano.getId(urbanizacion, manzano_id);
+        }
 
-        String query = "insert into lote(manzano_id,numero_lote,descripcion,ancho,largo,precio) values(?,?,?,?,?,?);";
+        query = "insert into lote(manzano_id,numero_lote,descripcion,ancho,largo,precio) values(?,?,?,?,?,?);";
 
-        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        prepareStatement = connection.prepareStatement(query);
         prepareStatement.setInt(1, manzano_id);
         prepareStatement.setInt(2, numero_lote);
         prepareStatement.setString(3, descripcion);
@@ -237,6 +248,7 @@ public class Lote {
             Connection connection = conexion.getConnection();
 
             String query = "insert into venta(lote_id,cliente_id,cantidad_cuotas,fecha_venta) values(?,?,?,?);";
+            System.out.println(query);
             PreparedStatement prep = connection.prepareStatement(query);
 
             prep.setInt(1, this.getId());

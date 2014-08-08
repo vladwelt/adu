@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Vector;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -215,7 +216,7 @@ class VistaUrbanizacion extends JPanel {
 //        contenedor.setLayout(new BoxLayout(contenedor,
 //                    BoxLayout.LINE_AXIS));
         contenedor.setLayout(new FlowLayout(3, 50, 25));
-        JPanel form = new JPanel(new GridLayout(15, 1));
+        JPanel form = new JPanel(new GridLayout(17, 1));
         form.add(new JLabel("CLIENTE :"));
         form.add(new JLabel("C.I."));
         JTextField ci = new JTextField();
@@ -248,7 +249,7 @@ class VistaUrbanizacion extends JPanel {
         contenedor.add(form);
         contenedor.add(new JSeparator(SwingConstants.VERTICAL));
 
-        JPanel form1 = new JPanel(new GridLayout(15, 1));
+        JPanel form1 = new JPanel(new GridLayout(17, 1));
         form1.add(new JLabel("LOTE :"));
         form1.add(new JLabel("Numero de lote"));
         JTextField numlote = new JTextField();
@@ -265,7 +266,19 @@ class VistaUrbanizacion extends JPanel {
         form1.add(new JLabel("Largo"));
         JTextField largo = new JTextField();
         form1.add(largo);
-
+        
+        form1.add(new JLabel("Numero Manzano"));
+        String[] manzanoss = new String[urbanizacion.getCantidadManzanos()];
+        for (int i = 0; i < urbanizacion.getCantidadManzanos(); i++) {
+            manzanoss[i] = String.valueOf(i+1);
+        }
+        JComboBox manzanos = new JComboBox(manzanoss);
+        if(manzanos.getItemCount() > 0) {
+            manzanos.setSelectedIndex(0);
+            System.out.println(manzanos.getSelectedIndex());
+        }
+        form1.add(manzanos);
+        
         form1.add(new JLabel("Precio(Bs)"));
         JTextField precio = new JTextField();
         form1.add(precio);
@@ -309,7 +322,7 @@ class VistaUrbanizacion extends JPanel {
                     ap.getText(), am.getText(), dir.getText(),
                     numtf, numcel);
 
-            Lote lote = new Lote(2000,
+            Lote lote = new Lote(manzanos.getSelectedIndex() + 1,
                     numlargo, numancho, numprecio, numloteint,
                     descr.getText());
 
@@ -321,13 +334,16 @@ class VistaUrbanizacion extends JPanel {
             urbanizacion.getLotes().add(lote);
             try {
                 cliente_.save();
-                lote.save();
+                lote.save(urbanizacion);
                 Lote lote1 = urbanizacion.getLote(lote.getNumero_lote());
-                lote1.vender(cliente_.getCi(), fecha_venta, numcantlotes);
+                if (lote1 != null) {
+                    lote1.vender(cliente_.getCi(), fecha_venta, numcantlotes);
+                } else {
+                }
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-
+            
         }
     }
 

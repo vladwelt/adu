@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS `adu`.`manzano` ;
 
 CREATE  TABLE IF NOT EXISTS `adu`.`manzano` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `nombre` VARCHAR(45) NOT NULL ,
+  `numero_manzano` INT NOT NULL ,
   `urbanizacion_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_manzano_urbanizacion_idx` (`urbanizacion_id` ASC) ,

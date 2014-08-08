@@ -38,7 +38,7 @@ public class Urbanizacion {
         return this.ancho;
     }
 
-    public int getCantidadLotes() {
+    public int getCantidadManzanos() {
         return this.cantidad_lotes;
     }
 
@@ -104,7 +104,7 @@ public class Urbanizacion {
                 descripcion = resultSet.getString("descripcion");
                 ancho = resultSet.getDouble("lote.ancho");
                 largo = resultSet.getDouble("lote.largo");
-                precio = resultSet.getDouble("precio");
+                precio = resultSet.getDouble("lote.precio");
                 lote = new Lote(id, id_manzano, largo, ancho, precio, numero_lote, descripcion);
                 res.add(lote);
             }
