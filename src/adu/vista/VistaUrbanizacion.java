@@ -251,6 +251,18 @@ class VistaUrbanizacion extends JPanel {
 
         JPanel form1 = new JPanel(new GridLayout(17, 1));
         form1.add(new JLabel("LOTE :"));
+        
+        form1.add(new JLabel("Numero Manzano"));
+        String[] manzanoss = new String[urbanizacion.getCantidadManzanos()];
+        for (int i = 0; i < urbanizacion.getCantidadManzanos(); i++) {
+            manzanoss[i] = String.valueOf(i+1);
+        }
+        JComboBox manzanos = new JComboBox(manzanoss);
+        if(manzanos.getItemCount() > 0) {
+            manzanos.setSelectedIndex(0);
+        }
+        form1.add(manzanos);
+        
         form1.add(new JLabel("Numero de lote"));
         JTextField numlote = new JTextField();
         form1.add(numlote);
@@ -266,18 +278,6 @@ class VistaUrbanizacion extends JPanel {
         form1.add(new JLabel("Largo"));
         JTextField largo = new JTextField();
         form1.add(largo);
-        
-        form1.add(new JLabel("Numero Manzano"));
-        String[] manzanoss = new String[urbanizacion.getCantidadManzanos()];
-        for (int i = 0; i < urbanizacion.getCantidadManzanos(); i++) {
-            manzanoss[i] = String.valueOf(i+1);
-        }
-        JComboBox manzanos = new JComboBox(manzanoss);
-        if(manzanos.getItemCount() > 0) {
-            manzanos.setSelectedIndex(0);
-            System.out.println(manzanos.getSelectedIndex());
-        }
-        form1.add(manzanos);
         
         form1.add(new JLabel("Precio(Bs)"));
         JTextField precio = new JTextField();
