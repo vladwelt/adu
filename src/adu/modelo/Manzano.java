@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package adu.modelo;
 
 import java.sql.Connection;
@@ -37,6 +32,20 @@ public class Manzano {
         ResultSet resultSet = connection.createStatement().executeQuery(query);
         if (resultSet.next()) {
             res = resultSet.getInt("id");
+        }
+        return res;
+    }
+
+    public static int getNumeroManzano(int manzano_id) 
+        throws SQLException{
+
+        int res = -1;
+        String query = "SELECT numero_manzano FROM manzano where id="+manzano_id +";";
+        System.out.println(query);
+        Connection connection = Conexion.getConexion().getConnection();
+        ResultSet resultSet = connection.createStatement().executeQuery(query);
+        if(resultSet.next()) {
+            res = resultSet.getInt("numero_manzano");
         }
         return res;
     }

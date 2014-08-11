@@ -11,11 +11,12 @@ import java.util.logging.Logger;
 
 public class Lote {
 
-    public static ArrayList<Pago> getPagos(Urbanizacion urbanizacion, int ci, int nroLote) {
+    public static ArrayList<Pago> getPagos(Urbanizacion urbanizacion, int ci, int nroLote, int nroManzano) {
         ArrayList<Lote> lotes = urbanizacion.getLotes();
         Lote buscado = null;
         for (Lote lote : lotes) {
-            if (lote.getNumero_lote() == nroLote) {
+            if (lote.getNumero_lote() == nroLote && 
+                    lote.getNumeroManzano() == nroManzano) {
                 buscado = lote;
             }
         }
@@ -55,20 +56,19 @@ public class Lote {
     }
 
     public int getId() {
-        return this.id;
-//        int myid = -1;
-//        try {
-//            String query = "select id from lote where numero_lote = " + this.numero_lote + ";";
-//            Connection connection = Conexion.getConexion().getConnection();
-//            ResultSet resultSet = connection.createStatement().executeQuery(query);
-//            if (resultSet.next()) {
-//                myid = resultSet.getInt("id");
-//            }
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return myid;
+        int myid = -1;
+        try {
+            String query = "select lote.id from lote, manzano where numero_lote = " + this.numero_lote +" and manzano_id="+this.manzano_id+";";
+            Connection connection = Conexion.getConexion().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if (resultSet.next()) {
+                myid = resultSet.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Urbanizacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return myid;
     }
 
     public double getLargo() {
@@ -240,7 +240,7 @@ public class Lote {
         }
         return myid;
     }
-
+    
     public boolean vender(int cliente_id, Date date,
             int cantidad_cuotas) throws SQLException {
         try {
@@ -268,5 +268,16 @@ public class Lote {
     public double getDeuda() {
         return getPrecio() - getSumaPagos();
     }
+    
+    public int getManzanoId() {
+        return manzano_id;
+    }
 
+    public int getNumeroManzano() {
+        try {
+          return Manzano.getNumeroManzano(manzano_id);
+        } catch (SQLException e) {
+            return -1;
+        }
+    }
 }

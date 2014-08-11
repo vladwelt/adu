@@ -115,9 +115,10 @@ public class Urbanizacion {
         return res;
     }
 
-    public Lote getLote(int numero_lote) {
+    public Lote getLote(int numero_lote, int numero_manzano) {
         for (Lote lote : getLotes()) {
-            if (lote.getNumero_lote() == numero_lote) {
+            if (lote.getNumero_lote() == numero_lote 
+                    && lote.getNumeroManzano() == numero_manzano) {
                 return lote;
             }
         }

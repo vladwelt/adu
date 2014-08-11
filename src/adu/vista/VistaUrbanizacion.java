@@ -1,14 +1,8 @@
 package adu.vista;
 
-import adu.modelo.Cliente;
-import adu.modelo.Lote;
-import adu.modelo.Pago;
-import adu.modelo.Urbanizacion;
+import adu.modelo.*;
 import com.toedter.calendar.JDateChooser;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-//import java.awt.event.MouseAdapter;
 import java.awt.event.*;
 import java.awt.event.MouseAdapter;
 
@@ -68,8 +62,11 @@ class VistaUrbanizacion extends JPanel {
 
         button_add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                addVenta(null);
-                //System.out.println("Venta");
+                try {
+                    addVenta(null);
+                } catch (NumberFormatException e) {
+                    System.out.println("ERROR AL INGRESAR LOS DATOS " +     e.getMessage());
+                }
             }
         });
 
@@ -97,19 +94,21 @@ class VistaUrbanizacion extends JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int indice = tabla.getSelectedRow();
                 int index = tabla.getSelectedColumn();
-                if (indice < 0 || index > 6) {
+                if (indice < 0 || index > 7) {
                     System.out.println("indice negativo seleccionado de la tabla de clientes");
                     return;
                 }
                 Object oLote = tabla.getValueAt(indice, 0);
-                Object oCi = tabla.getValueAt(indice, 1);
+                Object oManzano = tabla.getValueAt(indice, 1);
+                Object oCi = tabla.getValueAt(indice, 2);
                 if (oLote == null || oCi == null) {
                     System.out.println("lote o ci == null");
                     return;
                 }
                 int lote = Integer.parseInt(oLote.toString());
                 int ci = Integer.parseInt(oCi.toString());
-                ArrayList<Pago> pagos = Lote.getPagos(urbanizacion, ci, lote);
+                int manzano = Integer.parseInt(oManzano.toString());
+                ArrayList<Pago> pagos = Lote.getPagos(urbanizacion, ci, lote, manzano);
                 String[] columnNames = {
                     "fecha pago",
                     "monto"
@@ -143,17 +142,23 @@ class VistaUrbanizacion extends JPanel {
                 form.add(new JLabel("COBRAR :"));
                 form.add(new JLabel("Nombre"));
                 JTextField nomcompleto = new JTextField();
-                nomcompleto.setText(model.getValueAt(index, 2) + " "
-                        + model.getValueAt(index, 3) + " "
-                        + model.getValueAt(index, 4));
+                nomcompleto.setText(model.getValueAt(index, 3) + " "
+                        + model.getValueAt(index, 4) + " "
+                        + model.getValueAt(index, 5));
                 nomcompleto.setEditable(false);
                 form.add(nomcompleto);
 
-                form.add(new JLabel("Numero de Lote"));
+                form.add(new JLabel("Lote"));
                 JTextField num_lote = new JTextField();
                 num_lote.setText(model.getValueAt(index, 0).toString());
                 num_lote.setEditable(false);
                 form.add(num_lote);
+
+                form.add(new JLabel("Manzano"));
+                JTextField num_manzano = new JTextField();
+                num_manzano.setText(model.getValueAt(index, 1).toString());
+                num_manzano.setEditable(false);
+                form.add(num_manzano);
 
                 form.add(new JLabel("Monto"));
                 JTextField monto = new JTextField();
@@ -171,7 +176,8 @@ class VistaUrbanizacion extends JPanel {
                 if (result == JOptionPane.OK_OPTION) {
                     try {
                         int numero_lote = Integer.parseInt(num_lote.getText());
-                        Lote lote = urbanizacion.getLote(numero_lote);
+                        int numero_manzano = Integer.parseInt(num_manzano.getText());
+                        Lote lote = urbanizacion.getLote(numero_lote, numero_manzano);
                         if (lote == null) {
                             System.out.println("lote no encontrado null");
                             return;
@@ -191,7 +197,7 @@ class VistaUrbanizacion extends JPanel {
             }
         };
 
-        ButtonColumn buttonColumn = new ButtonColumn(tabla, cobrar, 7);
+        ButtonColumn buttonColumn = new ButtonColumn(tabla, cobrar, 8);
     }
 
     public void setModel(DefaultTableModel model) {
@@ -211,7 +217,7 @@ class VistaUrbanizacion extends JPanel {
         sorter.setRowFilter(filter);
     }
 
-    public void addVenta(JFrame frame) {
+    public void addVenta(JFrame frame) throws NumberFormatException{
         JPanel contenedor = new JPanel();
 //        contenedor.setLayout(new BoxLayout(contenedor,
 //                    BoxLayout.LINE_AXIS));
@@ -304,8 +310,8 @@ class VistaUrbanizacion extends JPanel {
                 JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
-            //try {
             //TODO Verificacion de datos correctos
+
             int numci = Integer.parseInt(ci.getText());
             int numtf = Integer.parseInt(tf.getText());
             int numcel = Integer.parseInt(cel.getText());
@@ -315,9 +321,7 @@ class VistaUrbanizacion extends JPanel {
             int numloteint = Integer.parseInt(numlote.getText());
             int numcantlotes = Integer.parseInt(cantcuotas.getText());
             Date fecha_venta = new Date(fecha.getDate().getTime());
-            //} catch(Exception e) {
-            //  System.out.println("ERROR IN INPUT DATA");
-            //}
+
             Cliente cliente_ = new Cliente(numci, nombre.getText(),
                     ap.getText(), am.getText(), dir.getText(),
                     numtf, numcel);
@@ -327,27 +331,34 @@ class VistaUrbanizacion extends JPanel {
                     descr.getText());
 
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-            model.addRow(new Object[]{lote.getNumero_lote(),
-                cliente_.getCi(), cliente_.getNombre(),
-                cliente_.getApellidoPaterno(), cliente_.getApellidoMaterno(),
-                lote.getPrecio(), lote.getPrecio(), "Cobrar"});
+
             urbanizacion.getLotes().add(lote);
             try {
                 cliente_.save();
                 lote.save(urbanizacion);
-                Lote lote1 = urbanizacion.getLote(lote.getNumero_lote());
-                if (lote1 != null) {
-                    lote1.vender(cliente_.getCi(), fecha_venta, numcantlotes);
-                } else {
-                }
+                //Lote lote1 = urbanizacion.getLote(lote.getNumero_lote());
+                //if (lote1 != null) {
+                    lote.vender(cliente_.getCi(), fecha_venta, numcantlotes);
+                //} else {
+                //}
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
             
+            model.addRow(new Object[]{lote.getNumero_lote(),
+                lote.getNumeroManzano(),
+                cliente_.getCi(), cliente_.getNombre(),
+                cliente_.getApellidoPaterno(), 
+                cliente_.getApellidoMaterno(),lote.getPrecio(),
+                lote.getPrecio(), "Cobrar"});
         }
     }
+    
+    public void alertMessage(String message) {
+        
+    }
 
-    public void addPago() {
-        JPanel form = new JPanel(new GridLayout(0, 1));
+    public int addCobro() {
+        return 1; 
     }
 }

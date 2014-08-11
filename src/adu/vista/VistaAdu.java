@@ -177,7 +177,7 @@ public class VistaAdu extends JFrame {
         JTextField largo = new JTextField();
         form.add(largo);
 
-        form.add(new JLabel("Numero de Lotes"));
+        form.add(new JLabel("Numero de Manzanos"));
         JTextField numLotes = new JTextField();
         form.add(numLotes);
         
@@ -187,7 +187,7 @@ public class VistaAdu extends JFrame {
         if(result == JOptionPane.OK_OPTION) {
 
             double numancho = Double.parseDouble(ancho.getText());
-            double numlargo = Double.parseDouble(largo.getText());
+            double numlargo = Double.parseDouble(largo.getText());
             int numlotes = Integer.parseInt(numLotes.getText());
             Urbanizacion nueva = new Urbanizacion(nombre.getText(),
                     numancho,numlargo,numlotes);
