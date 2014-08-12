@@ -10,9 +10,8 @@ import javax.swing.table.DefaultTableModel;
 
 import java.sql.SQLException;
 
-public class Controlador implements ActionListener {
+public class Controlador {
 
-    //private VistaUrbanizacion urbanizacion;
     private VistaAdu vista;
 
     public Controlador(VistaAdu _vista) {
@@ -73,13 +72,15 @@ public class Controlador implements ActionListener {
         vista.addMenuActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource() == vista.getMenuAgregarUrbanizacion()) {
-                    vista.addUrbanizacion();
+                    try {
+                        vista.addUrbanizacion();
+                    } catch (NumberFormatException e) {
+                        vista.alertMessage("LOS DATOS INGRESADOS "
+                                +"NO SON CORRECTOS : \n" +
+                                e.getMessage());
+                    }
                 }
             }
         });
-    }
-    
-    public void actionPerformed(ActionEvent evt) {
-        //  TODO 
     }
 }

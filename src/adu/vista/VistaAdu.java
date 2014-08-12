@@ -63,7 +63,6 @@ public class VistaAdu extends JFrame {
             }
         });
 
-
         pes = 0;
         initMenus();
         add(lista_urbanizaciones, BorderLayout.NORTH);
@@ -163,7 +162,7 @@ public class VistaAdu extends JFrame {
     }
 
     //VIEW AGREGAR
-    public void addUrbanizacion() {
+    public void addUrbanizacion() throws NumberFormatException {
         JPanel form = new JPanel(new GridLayout(0,1));
         form.add(new JLabel("Nombre"));
         JTextField nombre = new JTextField();
@@ -184,19 +183,25 @@ public class VistaAdu extends JFrame {
         int result = JOptionPane.showConfirmDialog(null,
                 form,"Agregar Urbanizacion",JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
-        if(result == JOptionPane.OK_OPTION) {
 
-            double numancho = Double.parseDouble(ancho.getText());
-            double numlargo = Double.parseDouble(largo.getText());
-            int numlotes = Integer.parseInt(numLotes.getText());
+        double numancho = Double.parseDouble(ancho.getText());
+        double numlargo = Double.parseDouble(largo.getText());
+        int numlotes = Integer.parseInt(numLotes.getText());
+
+        if(result == JOptionPane.OK_OPTION) {
             Urbanizacion nueva = new Urbanizacion(nombre.getText(),
                     numancho,numlargo,numlotes);
             try {
                 nueva.save();
                 lista_urbanizaciones.addItem(nueva);
             } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+                alertMessage("BASE DE DATOS: " + ex.getMessage());
             }
         }
+    }
+
+    public void alertMessage(String message) {
+        JOptionPane.showMessageDialog(this,message,"ERROR!!!",
+                JOptionPane.ERROR_MESSAGE);
     }
 }

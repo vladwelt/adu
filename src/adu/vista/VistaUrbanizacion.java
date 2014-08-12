@@ -65,6 +65,8 @@ class VistaUrbanizacion extends JPanel {
                 try {
                     addVenta(null);
                 } catch (NumberFormatException e) {
+                    alertMessage("LOS DATOS INGRESADOS NO SON CORRECTOS"
+                            +"\n"+e.getMessage());
                     System.out.println("ERROR AL INGRESAR LOS DATOS " +     e.getMessage());
                 }
             }
@@ -136,63 +138,11 @@ class VistaUrbanizacion extends JPanel {
                 JTable table = (JTable) e.getSource();
                 int index = Integer.valueOf(e.getActionCommand());
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.getValueAt(index, 1);
-                JPanel form = new JPanel(new GridLayout(0, 1));
-
-                form.add(new JLabel("COBRAR :"));
-                form.add(new JLabel("Nombre"));
-                JTextField nomcompleto = new JTextField();
-                nomcompleto.setText(model.getValueAt(index, 3) + " "
-                        + model.getValueAt(index, 4) + " "
-                        + model.getValueAt(index, 5));
-                nomcompleto.setEditable(false);
-                form.add(nomcompleto);
-
-                form.add(new JLabel("Lote"));
-                JTextField num_lote = new JTextField();
-                num_lote.setText(model.getValueAt(index, 0).toString());
-                num_lote.setEditable(false);
-                form.add(num_lote);
-
-                form.add(new JLabel("Manzano"));
-                JTextField num_manzano = new JTextField();
-                num_manzano.setText(model.getValueAt(index, 1).toString());
-                num_manzano.setEditable(false);
-                form.add(num_manzano);
-
-                form.add(new JLabel("Monto"));
-                JTextField monto = new JTextField();
-                form.add(monto);
-
-                form.add(new JLabel("fecha"));
-
-                JDateChooser fecha = new JDateChooser(new java.util.Date());
-                fecha.setLocale(new Locale("ES"));
-                form.add(fecha);
-
-                int result = JOptionPane.showConfirmDialog(null, form,
-                        "Cobrar", JOptionPane.OK_CANCEL_OPTION,
-                        JOptionPane.PLAIN_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
-                    try {
-                        int numero_lote = Integer.parseInt(num_lote.getText());
-                        int numero_manzano = Integer.parseInt(num_manzano.getText());
-                        Lote lote = urbanizacion.getLote(numero_lote, numero_manzano);
-                        if (lote == null) {
-                            System.out.println("lote no encontrado null");
-                            return;
-                        }
-                        int cuota = Integer.parseInt(monto.getText());
-                        Date fecha_pago = new Date(fecha.getDate().getTime());
-                        lote.pagarCuota(cuota, fecha_pago);
-                        tabla.getModel().setValueAt(lote.getDeuda(), index, 6);
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "no se registro el cobro");
-                        System.out.println(ex.getMessage());
-                    }
-
-                } else {
-                    System.out.println(new Date(fecha.getDate().getTime()));
+                try {
+                    addCobro(model, index);
+                } catch (NumberFormatException ex) {
+                    alertMessage("LOS DATOS INGRESADOS NO SON CORRECTOS"
+                            + "\n" + ex.getMessage());
                 }
             }
         };
@@ -218,9 +168,9 @@ class VistaUrbanizacion extends JPanel {
     }
 
     public void addVenta(JFrame frame) throws NumberFormatException{
+
         JPanel contenedor = new JPanel();
-//        contenedor.setLayout(new BoxLayout(contenedor,
-//                    BoxLayout.LINE_AXIS));
+
         contenedor.setLayout(new FlowLayout(3, 50, 25));
         JPanel form = new JPanel(new GridLayout(17, 1));
         form.add(new JLabel("CLIENTE :"));
@@ -290,28 +240,22 @@ class VistaUrbanizacion extends JPanel {
         form1.add(precio);
 
         contenedor.add(form1);
-//        contenedor.add(new JSeparator(SwingConstants.VERTICAL));
 
-//        JPanel form2 = new JPanel(new GridLayout(15, 1));
-//        form1.add(new JLabel("VENTA :"));
         form1.add(new JLabel("Cantidad de cuotas"));
         JTextField cantcuotas = new JTextField();
         form1.add(cantcuotas);
 
         form1.add(new JLabel("Fecha de Venta"));
-//        JTextField fecha = new JTextField();
+
         JDateChooser fecha = new JDateChooser(new java.util.Date());
         fecha.setLocale(new Locale("ES"));
         form1.add(fecha);
-//        contenedor.add(form2);
 
         int result = JOptionPane.showConfirmDialog(frame, contenedor,
                 "Agregar Cliente", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
-            //TODO Verificacion de datos correctos
-
             int numci = Integer.parseInt(ci.getText());
             int numtf = Integer.parseInt(tf.getText());
             int numcel = Integer.parseInt(cel.getText());
@@ -336,29 +280,82 @@ class VistaUrbanizacion extends JPanel {
             try {
                 cliente_.save();
                 lote.save(urbanizacion);
-                //Lote lote1 = urbanizacion.getLote(lote.getNumero_lote());
-                //if (lote1 != null) {
-                    lote.vender(cliente_.getCi(), fecha_venta, numcantlotes);
-                //} else {
-                //}
+                lote.vender(cliente_.getCi(), fecha_venta, numcantlotes);
+                model.addRow(new Object[]{lote.getNumero_lote(),
+                    lote.getNumeroManzano(),
+                    cliente_.getCi(), cliente_.getNombre(),
+                    cliente_.getApellidoPaterno(), 
+                    cliente_.getApellidoMaterno(),lote.getPrecio(),
+                    lote.getPrecio(), "Cobrar"});
             } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+                alertMessage("BASE DE DATOS[Urbanizacion] : \n" +
+                        ex.getMessage());
             }
-            
-            model.addRow(new Object[]{lote.getNumero_lote(),
-                lote.getNumeroManzano(),
-                cliente_.getCi(), cliente_.getNombre(),
-                cliente_.getApellidoPaterno(), 
-                cliente_.getApellidoMaterno(),lote.getPrecio(),
-                lote.getPrecio(), "Cobrar"});
         }
     }
     
     public void alertMessage(String message) {
-        
+            JOptionPane.showMessageDialog(null, message,
+                "ERROR!!!", JOptionPane.ERROR_MESSAGE);
     }
 
-    public int addCobro() {
-        return 1; 
+    public void addCobro(DefaultTableModel model,
+            int index)throws NumberFormatException {
+        JPanel form = new JPanel(new GridLayout(0, 1));
+
+        form.add(new JLabel("COBRAR :"));
+        form.add(new JLabel("Nombre"));
+        JTextField nomcompleto = new JTextField();
+        nomcompleto.setText(model.getValueAt(index, 3) + " "
+              + model.getValueAt(index, 4) + " "
+                + model.getValueAt(index, 5));
+        nomcompleto.setEditable(false);
+        form.add(nomcompleto);
+
+        form.add(new JLabel("Lote"));
+        JTextField num_lote = new JTextField();
+        num_lote.setText(model.getValueAt(index, 0).toString());
+        num_lote.setEditable(false);
+        form.add(num_lote);
+
+        form.add(new JLabel("Manzano"));
+        JTextField num_manzano = new JTextField();
+        num_manzano.setText(model.getValueAt(index, 1).toString());
+        num_manzano.setEditable(false);
+        form.add(num_manzano);
+
+        form.add(new JLabel("Monto"));
+        JTextField monto = new JTextField();
+        form.add(monto);
+
+        form.add(new JLabel("fecha"));
+
+        JDateChooser fecha = new JDateChooser(new java.util.Date());
+        fecha.setLocale(new Locale("ES"));
+        form.add(fecha);
+
+        int result = JOptionPane.showConfirmDialog(null, form,
+                "Cobrar", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+
+        int numero_lote = Integer.parseInt(num_lote.getText());
+        int numero_manzano = Integer.parseInt(num_manzano.getText());
+        int cuota = Integer.parseInt(monto.getText());
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                Lote lote = urbanizacion.getLote(numero_lote, numero_manzano);
+                if (lote == null) {
+                    alertMessage("LOTE NO ENCONTRADO!!!");
+                    return;
+                }
+                Date fecha_pago = new Date(fecha.getDate().getTime());
+                lote.pagarCuota(cuota, fecha_pago);
+                tabla.getModel().setValueAt(lote.getDeuda(), index, 6);
+            } catch (SQLException ex) {
+                alertMessage("BASE DE DATOS[cobros] : \n" + 
+                    ex.getMessage());
+            }
+        }
     }
 }
