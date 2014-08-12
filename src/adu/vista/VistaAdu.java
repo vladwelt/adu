@@ -29,6 +29,7 @@ public class VistaAdu extends JFrame {
     private JMenu menu_archivo;
     private JMenuItem menu_archivo_guardar;
     private JMenuItem menu_archivo_abrir;
+    private JMenuItem menu_archivo_salir;
 
     //backup
     private JFileChooser fileChooser;
@@ -104,11 +105,18 @@ public class VistaAdu extends JFrame {
                 int result = fileChooser.showSaveDialog(VistaAdu.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
-                    //System.out.println(file.getAbsolutePath());
                     backup.backupDB(file.getAbsolutePath());
                 }
             }
         });
+
+        menu_archivo_salir = new JMenuItem("Salir");
+        menu_archivo_salir.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        menu_archivo.add(menu_archivo_salir);
     }
 
     public void addMenuActionListener(ActionListener listener) {
@@ -117,7 +125,7 @@ public class VistaAdu extends JFrame {
 
     public void runTest() {
         panels.removeAll();
-        setSize(new Dimension(600, 400));
+        setSize(new Dimension(800, 800));
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -141,19 +149,34 @@ public class VistaAdu extends JFrame {
     }
 
     private void iniciarTabComponent(int i) {
-        panels.setTabComponentAt(i, new ButtonTabComponent(panels));
+        panels.setTabComponentAt(i, new ButtonTabComponent(panels,this));
     }
 
     public void setTablaLotesMdel(DefaultTableModel model ,
             Urbanizacion _urbanizacion) {
         String nombre = getSelectedUrbanizacion().toString();
+        //Para no repetir tabs ya creados
+        if(tabExists(nombre))
+            return;
+
         panels.add(nombre, new VistaUrbanizacion(model,_urbanizacion));
         iniciarTabComponent(pes);
         pes++;
 
-        setSize(new Dimension(600, 400));
+        setSize(new Dimension(800, 800));
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private boolean tabExists(String title) {
+        if(panels.getTabCount()>0) {
+            for (int i = 0 ; i< panels.getTabCount(); i++) {
+                if(title.equals(panels.getTitleAt(i).toString()))
+                    return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     //GET menus
@@ -203,5 +226,9 @@ public class VistaAdu extends JFrame {
     public void alertMessage(String message) {
         JOptionPane.showMessageDialog(this,message,"ERROR!!!",
                 JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void reduceTab() {
+        this.pes--;
     }
 }

@@ -44,14 +44,16 @@ import java.awt.event.*;
  */ 
 public class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
+    private VistaAdu vista;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    public ButtonTabComponent(final JTabbedPane pane, VistaAdu main) {
         //unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if (pane == null) {
             throw new NullPointerException("TabbedPane is null");
         }
         this.pane = pane;
+        this.vista = main;
         setOpaque(false);
         
         //make JLabel read titles from JTabbedPane
@@ -71,6 +73,11 @@ public class ButtonTabComponent extends JPanel {
         //tab button
         JButton button = new TabButton();
         add(button);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                vista.reduceTab();
+            }
+        });
         //add more space to the top of the component
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }

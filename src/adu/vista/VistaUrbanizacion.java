@@ -194,10 +194,6 @@ class VistaUrbanizacion extends JPanel {
         JTextField dir = new JTextField();
         form.add(dir);
 
-        form.add(new JLabel("Telefono Fijo"));
-        JTextField tf = new JTextField();
-        form.add(tf);
-
         form.add(new JLabel("Celular"));
         JTextField cel = new JTextField();
         form.add(cel);
@@ -257,7 +253,6 @@ class VistaUrbanizacion extends JPanel {
 
         if (result == JOptionPane.OK_OPTION) {
             int numci = Integer.parseInt(ci.getText());
-            int numtf = Integer.parseInt(tf.getText());
             int numcel = Integer.parseInt(cel.getText());
             double numlargo = Double.parseDouble(largo.getText());
             double numancho = Double.parseDouble(ancho.getText());
@@ -268,7 +263,7 @@ class VistaUrbanizacion extends JPanel {
 
             Cliente cliente_ = new Cliente(numci, nombre.getText(),
                     ap.getText(), am.getText(), dir.getText(),
-                    numtf, numcel);
+                    00000, numcel);
 
             Lote lote = new Lote(manzanos.getSelectedIndex() + 1,
                     numlargo, numancho, numprecio, numloteint,
@@ -351,7 +346,7 @@ class VistaUrbanizacion extends JPanel {
                 }
                 Date fecha_pago = new Date(fecha.getDate().getTime());
                 lote.pagarCuota(cuota, fecha_pago);
-                tabla.getModel().setValueAt(lote.getDeuda(), index, 6);
+                tabla.getModel().setValueAt(lote.getDeuda(), index, 7);
             } catch (SQLException ex) {
                 alertMessage("BASE DE DATOS[cobros] : \n" + 
                     ex.getMessage());
