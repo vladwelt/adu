@@ -270,6 +270,11 @@ class VistaUrbanizacion extends JPanel {
                     descr.getText());
 
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            if(checkData(model, numloteint, manzanos.getSelectedIndex()+1)) {
+                alertMessage("EL LOTE DEL MANZANO YA FUE VENDIDO!!");
+                return;
+            }
+                
 
             urbanizacion.getLotes().add(lote);
             try {
@@ -292,6 +297,17 @@ class VistaUrbanizacion extends JPanel {
     public void alertMessage(String message) {
             JOptionPane.showMessageDialog(null, message,
                 "ERROR!!!", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private boolean checkData(DefaultTableModel model, int numlote,
+            int nummanzano) {
+        for(int i=0; i< model.getRowCount(); i++) {
+            int lot = Integer.parseInt(model.getValueAt(i, 0).toString());
+            int man = Integer.parseInt(model.getValueAt(i, 1).toString());
+            if(lot == numlote && man == nummanzano)
+                return true;
+        }
+        return false;
     }
 
     public void addCobro(DefaultTableModel model,
