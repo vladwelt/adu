@@ -349,11 +349,11 @@ class VistaUrbanizacion extends JPanel {
                 "Cobrar", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
 
-        int numero_lote = Integer.parseInt(num_lote.getText());
-        int numero_manzano = Integer.parseInt(num_manzano.getText());
-        int cuota = Integer.parseInt(monto.getText());
-
         if (result == JOptionPane.OK_OPTION) {
+            int numero_lote = Integer.parseInt(num_lote.getText());
+            int numero_manzano = Integer.parseInt(num_manzano.getText());
+            int cuota = Integer.parseInt(monto.getText());
+
             try {
                 Lote lote = urbanizacion.getLote(numero_lote, numero_manzano);
                 if (lote == null) {

@@ -9,7 +9,7 @@ public class Conexion {
     private String driver = "com.mysql.jdbc.Driver";
     private String connectString = "jdbc:mysql://localhost:3306/adu";
     private String user = "root";
-    private String password = "root";
+    private String password = "asdf";
  
     private Conexion() {
         try {
@@ -17,6 +17,7 @@ public class Conexion {
             conn = DriverManager.getConnection(connectString, user, password);
             System.out.println("conexion establecida");
         } catch (ClassNotFoundException | SQLException e) {
+            new Moderador("root","asdf").restoreDB();
             System.out.println("fallo la conexxion");
             System.exit(0);
         }

@@ -31,15 +31,13 @@ public class VistaAdu extends JFrame {
     private JMenuItem menu_archivo_abrir;
     private JMenuItem menu_archivo_salir;
 
-    //backup
-    private JFileChooser fileChooser;
     private Moderador backup;
 
     public VistaAdu(String nombre) {
         super(nombre);
 
         //fill data with you user and password
-        backup = new Moderador("root","root");
+        backup = new Moderador("root","asdf");
         fileChooser = new JFileChooser();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,7 +48,7 @@ public class VistaAdu extends JFrame {
         try {
             lista_urbanizaciones.setModel(ListaUrbanizacion.getUrbanizaciones().getModel());
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("JAVA : " +ex.getMessage());
         }
         if(lista_urbanizaciones.getModel().getSize() > 0)
             lista_urbanizaciones.setSelectedIndex(0);
@@ -89,24 +87,14 @@ public class VistaAdu extends JFrame {
         menu_archivo.add(menu_archivo_abrir);
         menu_archivo_abrir.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                int result = fileChooser.showOpenDialog(VistaAdu.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                   File file = fileChooser.getSelectedFile();
-                   backup.restoreDB(file.getAbsolutePath());
-                }
+                backup.restoreDB();
             }
         });
 
         menu_archivo.add(menu_archivo_guardar);
         menu_archivo_guardar.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int result = fileChooser.showSaveDialog(VistaAdu.this);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    backup.backupDB(file.getAbsolutePath());
-                }
+                backup.backupDB();
             }
         });
 
@@ -207,11 +195,11 @@ public class VistaAdu extends JFrame {
                 form,"Agregar Urbanizacion",JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
 
-        double numancho = Double.parseDouble(ancho.getText());
-        double numlargo = Double.parseDouble(largo.getText());
-        int numlotes = Integer.parseInt(numLotes.getText());
-
         if(result == JOptionPane.OK_OPTION) {
+
+            double numancho = Double.parseDouble(ancho.getText());
+            double numlargo = Double.parseDouble(largo.getText());
+            int numlotes = Integer.parseInt(numLotes.getText());
             Urbanizacion nueva = new Urbanizacion(nombre.getText(),
                     numancho,numlargo,numlotes);
             try {
