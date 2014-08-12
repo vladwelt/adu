@@ -1,17 +1,21 @@
+java -jar adu.jar
+
+Ó 
+
 create database adu;
 
 use adu
 
-source path/src/adu/sql/adu.sql
+source path/model_database/adu.sql
 
-para usar substance descargar el jar de 
+
+AND
+
+For use substance download jar from
 
 http://www.java2s.com/Code/JarDownload/substance/substance-4.3.jar.zip
 
-para usar jcalendar descargar de 
+For use jcalendar download jar from
 
 http://www.java2s.com/Code/JarDownload/jcalendar/jcalendar-1.4.jar.zip
 
-activejdbc orm usado
-
-http://javalite.io/activejdbc
