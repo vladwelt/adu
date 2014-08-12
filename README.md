@@ -1,4 +1,10 @@
-java -jar adu.jar
+cd src/adu/
+javac -d . vista/*.java modelo/*.java controlador/controlador.java Main.java
+jar cfm Adu.jar Manifest.txt adu/
+
+AND
+
+java -jar Adu.jar
 
 Ó 
 

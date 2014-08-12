@@ -1,0 +1,2 @@
+Main-Class: adu.Main
+Class-Path: ./lib/jcalendar-1.4.jar ./lib/substance-4.3.jar ./lib/mysql-connector-java-5.1.23-bin.jar
