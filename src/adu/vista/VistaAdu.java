@@ -38,7 +38,6 @@ public class VistaAdu extends JFrame {
 
         //fill data with you user and password
         backup = new Moderador("root","asdf");
-        fileChooser = new JFileChooser();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

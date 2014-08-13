@@ -160,7 +160,7 @@ class VistaUrbanizacion extends JPanel {
         try {
             int indice = cb_tipo_busqueda.getSelectedIndex();
 
-            filter = RowFilter.regexFilter(label_find.getText(), 2 + indice);
+            filter = RowFilter.regexFilter(label_find.getText(), 3 + indice);
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
